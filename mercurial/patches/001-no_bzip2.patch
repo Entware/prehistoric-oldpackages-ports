@@ -1,0 +1,187 @@
+diff -aur a/mercurial/archival.py b/mercurial/archival.py
+--- a/mercurial/archival.py	2015-04-01 21:27:41.000000000 +0300
++++ b/mercurial/archival.py	2015-04-28 14:44:02.332405408 +0300
+@@ -44,7 +44,6 @@
+ 
+ exts = {
+     'tar': ['.tar'],
+-    'tbz2': ['.tbz2', '.tar.bz2'],
+     'tgz': ['.tgz', '.tar.gz'],
+     'zip': ['.zip'],
+     }
+@@ -58,7 +57,7 @@
+ 
+ class tarit(object):
+     '''write archive to tar file or stream.  can write uncompressed,
+-    or compress with gzip or bzip2.'''
++    or compress with gzip.'''
+ 
+     class GzipFileWithTime(gzip.GzipFile):
+ 
+@@ -223,7 +222,6 @@
+ archivers = {
+     'files': fileit,
+     'tar': tarit,
+-    'tbz2': lambda name, mtime: tarit(name, mtime, 'bz2'),
+     'tgz': lambda name, mtime: tarit(name, mtime, 'gz'),
+     'uzip': lambda name, mtime: zipit(name, mtime, False),
+     'zip': zipit,
+diff -aur a/mercurial/bundlerepo.py b/mercurial/bundlerepo.py
+--- a/mercurial/bundlerepo.py	2015-04-01 21:27:41.000000000 +0300
++++ b/mercurial/bundlerepo.py	2015-04-28 14:53:14.444499800 +0300
+@@ -409,7 +409,7 @@
+             rheads = None
+         else:
+             cg = other.changegroupsubset(incoming, rheads, 'incoming')
+-        bundletype = localrepo and "HG10BZ" or "HG10UN"
++        bundletype = localrepo and "HG10GZ" or "HG10UN"
+         fname = bundle = changegroup.writebundle(ui, cg, bundlename, bundletype)
+         # keep written bundle?
+         if bundlename:
+diff -aur a/mercurial/changegroup.py b/mercurial/changegroup.py
+--- a/mercurial/changegroup.py	2015-04-01 21:27:41.000000000 +0300
++++ b/mercurial/changegroup.py	2015-04-28 14:47:09.293901368 +0300
+@@ -9,7 +9,7 @@
+ from i18n import _
+ from node import nullrev, nullid, hex, short
+ import mdiff, util, dagutil
+-import struct, os, bz2, zlib, tempfile
++import struct, os, zlib, tempfile
+ import discovery, error, phases, branchmap
+ 
+ _CHANGEGROUPV1_DELTA_HEADER = "20s20s20s20s"
+@@ -73,19 +73,17 @@
+                           # is no capability signaling it.
+     "HG2Y": (), # special-cased below
+     "HG10UN": ("HG10UN", nocompress),
+-    "HG10BZ": ("HG10", lambda: bz2.BZ2Compressor()),
+     "HG10GZ": ("HG10GZ", lambda: zlib.compressobj()),
+ }
+ 
+ # hgweb uses this list to communicate its preferred type
+-bundlepriority = ['HG10GZ', 'HG10BZ', 'HG10UN']
++bundlepriority = ['HG10GZ', 'HG10UN']
+ 
+ def writebundle(ui, cg, filename, bundletype, vfs=None):
+     """Write a bundle file and return its filename.
+ 
+     Existing files will not be overwritten.
+     If no filename is specified, a temporary file is created.
+-    bz2 compression can be turned off.
+     The bundle file will be deleted in case of errors.
+     """
+ 
+@@ -145,12 +143,6 @@
+             zd = zlib.decompressobj()
+             for chunk in util.filechunkiter(f):
+                 yield zd.decompress(chunk)
+-    elif alg == 'BZ':
+-        def generator(f):
+-            zd = bz2.BZ2Decompressor()
+-            zd.decompress("BZ")
+-            for chunk in util.filechunkiter(f, 4096):
+-                yield zd.decompress(chunk)
+     else:
+         raise util.Abort("unknown bundle compression '%s'" % alg)
+     return util.chunkbuffer(generator(fh))
+diff -aur a/mercurial/commands.py b/mercurial/commands.py
+--- a/mercurial/commands.py	2015-04-01 21:27:41.000000000 +0300
++++ b/mercurial/commands.py	2015-04-28 14:53:42.560412160 +0300
+@@ -383,7 +383,6 @@
+ 
+     :``files``: a directory full of files (default)
+     :``tar``:   tar archive, uncompressed
+-    :``tbz2``:  tar archive, compressed using bzip2
+     :``tgz``:   tar archive, compressed using gzip
+     :``uzip``:  zip archive, uncompressed
+     :``zip``:   zip archive, compressed using deflate
+@@ -1182,7 +1181,6 @@
+ 
+     bundletype = opts.get('type', 'bzip2').lower()
+     btypes = {'none': 'HG10UN',
+-              'bzip2': 'HG10BZ',
+               'gzip': 'HG10GZ',
+               'bundle2': 'HG2Y'}
+     bundletype = btypes.get(bundletype)
+@@ -2165,7 +2163,6 @@
+ 
+     bundletype = opts.get('type', 'bzip2').lower()
+     btypes = {'none': 'HG10UN',
+-              'bzip2': 'HG10BZ',
+               'gzip': 'HG10GZ',
+               'bundle2': 'HG2Y'}
+     bundletype = btypes.get(bundletype)
+diff -aur a/mercurial/hgweb/hgwebdir_mod.py b/mercurial/hgweb/hgwebdir_mod.py
+--- a/mercurial/hgweb/hgwebdir_mod.py	2015-04-01 21:27:41.000000000 +0300
++++ b/mercurial/hgweb/hgwebdir_mod.py	2015-04-28 14:48:02.220522726 +0300
+@@ -249,7 +249,7 @@
+         def archivelist(ui, nodeid, url):
+             allowed = ui.configlist("web", "allow_archive", untrusted=True)
+             archives = []
+-            for i in [('zip', '.zip'), ('gz', '.tar.gz'), ('bz2', '.tar.bz2')]:
++            for i in [('zip', '.zip'), ('gz', '.tar.gz')]:
+                 if i[0] in allowed or ui.configbool("web", "allow" + i[0],
+                                                     untrusted=True):
+                     archives.append({"type" : i[0], "extension": i[1],
+diff -aur a/mercurial/hgweb/hgweb_mod.py b/mercurial/hgweb/hgweb_mod.py
+--- a/mercurial/hgweb/hgweb_mod.py	2015-04-01 21:27:41.000000000 +0300
++++ b/mercurial/hgweb/hgweb_mod.py	2015-04-28 14:47:38.269432172 +0300
+@@ -74,7 +74,7 @@
+         self.repostate = ((-1, -1), (-1, -1))
+         self.mtime = -1
+         self.reponame = name
+-        self.archives = 'zip', 'gz', 'bz2'
++        self.archives = 'zip', 'gz'
+         self.stripecount = 1
+         # a repo owner may set web.templates in .hg/hgrc to get any file
+         # readable by the user running the CGI script
+@@ -388,7 +388,6 @@
+                 yield {"type" : i, "extension" : spec[2], "node" : nodeid}
+ 
+     archive_specs = {
+-        'bz2': ('application/x-bzip2', 'tbz2', '.tar.bz2', None),
+         'gz': ('application/x-gzip', 'tgz', '.tar.gz', None),
+         'zip': ('application/zip', 'zip', '.zip', None),
+         }
+diff -aur a/mercurial/repair.py b/mercurial/repair.py
+--- a/mercurial/repair.py	2015-04-01 21:27:41.000000000 +0300
++++ b/mercurial/repair.py	2015-04-28 14:57:11.696410305 +0300
+@@ -43,8 +43,6 @@
+ 
+     if usebundle2:
+         bundletype = "HG2Y"
+-    elif compress:
+-        bundletype = "HG10BZ"
+     else:
+         bundletype = "HG10UN"
+     return changegroup.writebundle(repo.ui, cg, name, bundletype, vfs)
+diff -aur a/setup.py mercurial-3.3.3/setup.py
+--- a/setup.py	2015-04-01 21:27:41.000000000 +0300
++++ mercurial-3.3.3/setup.py	2015-04-28 14:42:45.480554506 +0300
+@@ -53,16 +53,6 @@
+ except AttributeError:
+     pass
+ 
+-if isironpython:
+-    sys.stderr.write("warning: IronPython detected (no bz2 support)\n")
+-else:
+-    try:
+-        import bz2
+-        bz2.BZ2Compressor # silence unused import warning
+-    except ImportError:
+-        raise SystemExit(
+-            "Couldn't import standard bz2 (incomplete Python install).")
+-
+ import os, stat, subprocess, time
+ import re
+ import shutil
+@@ -318,9 +308,6 @@
+             self.distribution.ext_modules = []
+         else:
+             h = os.path.join(get_python_inc(), 'Python.h')
+-            if not os.path.exists(h):
+-                raise SystemExit('Python headers are required to build '
+-                                 'Mercurial but weren\'t found in %s' % h)
+ 
+     def find_modules(self):
+         modules = build_py.find_modules(self)
