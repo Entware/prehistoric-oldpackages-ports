@@ -4,6 +4,8 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# Can't be upgraded, we've got too old kernel
+#
 
 include $(TOPDIR)/rules.mk
 
