@@ -64,6 +64,12 @@ CONFIGURE_VARS += ac_cv_path_PERL=/opt/bin/perl \
 		  ac_cv_path_DU=/opt/bin/du \
 		  ac_cv_path_SSH=/opt/bin/ssh \
 
+define Build/Configure
+	$(call Build/Configure/Default)
+	touch $(PKG_BUILD_DIR)/rsnapshot.{1,html}
+	touch $(PKG_BUILD_DIR)/rsnapshot-diff.1
+endef
+
 define Package/rsnapshot/install
 	$(INSTALL_DIR) $(1)/opt/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/$(PKG_NAME) $(1)/opt/bin/
