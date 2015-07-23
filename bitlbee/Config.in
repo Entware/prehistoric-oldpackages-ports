@@ -1,0 +1,60 @@
+menu "Configuration"
+        depends on PACKAGE_bitlbee
+
+config BITLBEE_ENABLE_SSL
+	bool "Enable SSL (required for MSN and Yahoo!)"
+	select PACKAGE_libgnutls
+	default y
+	help
+	  Disables SSL (gnutls)
+
+config BITLBEE_MSN
+	bool "Enable MSN"
+	depends on BITLBEE_ENABLE_SSL
+	default y if BITLBEE_ENABLE_SSL
+	default n if !BITLBEE_ENABLE_SSL
+	help 
+	  Unset this if you don't want Bitlbee to be able to connect to MSN networks
+
+config BITLBEE_YAHOO
+	bool "Enable Yahoo!"
+	depends on BITLBEE_ENABLE_SSL
+	default y if BITLBEE_ENABLE_SSL
+	default n if !BITLBEE_ENABLE_SSL
+	help 
+	  Unset this if you don't want Bitlbee to be able to connect to Yahoo! IM network
+
+config BITLBEE_JABBER
+	bool "Enable Jabber"
+	default y
+	help 
+	  Unset this if you don't want Bitlbee to be able to connect to Jabber networks
+
+config BITLBEE_OSCAR
+	bool "Enable Oscar (ICQ,AIM,etc)"
+	default y
+	help 
+	  Unset this if you don't want Bitlbee to be able to connect to Oscar based networks like ICQ and AIM
+
+config BITLBEE_TWITTER
+	bool "Enable Twitter"
+	default n
+	help 
+	  Unset this if you don't want Bitlbee to be able to connect to Twitter.com
+
+config BITLBEE_ENABLE_PLUGINS
+	bool "Enable Plugins support"
+	default n
+	help
+	  This enables plugin support for Bitlbee - unless you know how to cross-compile
+	  Plugins using OpenWRT's toolchain you might as well leave this disabled to save
+	  space.
+
+config BITLBEE_OTR
+	bool "Enable OTR support"
+	select PACKAGE_libotr
+	default n
+	help
+	  This enables OTR encryption support for Bitlbee.
+
+endmenu
