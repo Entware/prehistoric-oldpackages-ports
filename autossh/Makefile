@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=autossh
-PKG_VERSION:=1.4b
-PKG_RELEASE:=6
+PKG_VERSION:=1.4e
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tgz
 PKG_SOURCE_URL:=http://www.harding.motd.ca/autossh/
-PKG_MD5SUM:=8f9aa006f6f69e912d3c2f504622d6f7
+PKG_MD5SUM:=f86684b96e99d22b2e9d35dc63b0aa29
 
 include $(INCLUDE_DIR)/package.mk
 
