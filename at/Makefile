@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=at
-PKG_VERSION:=3.1.13
-PKG_RELEASE:=2
+PKG_VERSION:=3.1.16
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)_$(PKG_VERSION).orig.tar.gz
 PKG_SOURCE_URL:=http://ftp.debian.org/debian/pool/main/a/at
-PKG_MD5SUM:=1da61af6c29e323abaaf13ee1a8dad79
+PKG_MD5SUM:=d05da75d9b75d93917ffb16ab48b1e19
 
 include $(INCLUDE_DIR)/package.mk
 
