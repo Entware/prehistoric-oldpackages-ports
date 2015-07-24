@@ -8,14 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cups
-PKG_VERSION:=1.5.4
+PKG_VERSION:=2.0.3
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-source.tar.bz2
 PKG_SOURCE_URL:= http://www.cups.org/software/$(PKG_VERSION)
-PKG_MD5SUM:=de3006e5cf1ee78a9c6145ce62c4e982
-
-TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/opt/lib
+PKG_MD5SUM:=8d98b85edbdab7ab03739c9622f570e8
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -28,7 +26,7 @@ define Package/cups
 $(call Package/cups/Default)
   SECTION:=net
   CATEGORY:=Network
-  DEPENDS:=+libcups +libcupsmime +libcupscgi +libcupsppdc +libusb-1.0
+  DEPENDS:=+libcups +libcupsmime +libcupscgi +libcupsppdc +libcupsimage +libusb-1.0
   TITLE:=Common UNIX Printing System (daemon)
 endef
 
@@ -70,18 +68,6 @@ define Package/cups-client/description
 	Common UNIX Printing System - Client commands
 endef
 
-define Package/cups-filters
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  DEPENDS:=+libcupsimage +libcupsdriver
-  TITLE:=Common UNIX Printing System - Filter
-endef
-
-define Package/cups-filters/description
-	Common UNIX Printing System - Filter
-endef
-
 define Package/cups-ppdc
 $(call Package/cups/Default)
   SECTION:=net
@@ -116,18 +102,6 @@ endef
 
 define Package/libcupscgi/description
 	Common UNIX Printing System - CGI library
-endef
-
-define Package/libcupsdriver
-$(call Package/cups/Default)
-  SECTION:=libs
-  CATEGORY:=Libraries
-  DEPENDS:=+libcups
-  TITLE:=Common UNIX Printing System - Driver library
-endef
-
-define Package/libcupsdriver/description
-	Common UNIX Printing System - Driver library
 endef
 
 define Package/libcupsimage
@@ -166,224 +140,15 @@ define Package/libcupsppdc/description
 	Common UNIX Printing System - PPDC library
 endef
 
-define Package/cups-locale-de
+define Package/cups-locales
 $(call Package/cups/Default)
   SECTION:=net
   CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale de
+  TITLE:=Common UNIX Printing System - Locales
 endef
 
-define Package/cups-locale-de/description
-	Common UNIX Printing System - Locale de
-endef
-
-define Package/cups-locale-nl
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale nl
-endef
-
-define Package/cups-locale-nl/description
-	Common UNIX Printing System - Locale nl
-endef
-
-define Package/cups-locale-hu
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale hu
-endef
-
-define Package/cups-locale-hu/description
-	Common UNIX Printing System - Locale hu
-endef
-
-define Package/cups-locale-pt
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale pt
-endef
-
-define Package/cups-locale-pt/description
-	Common UNIX Printing System - Locale pt
-endef
-
-define Package/cups-locale-pt_BR
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale pt_BR
-endef
-
-define Package/cups-locale-pt_BR/description
-	Common UNIX Printing System - Locale pt_BR
-endef
-
-define Package/cups-locale-fi
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale fi
-endef
-
-define Package/cups-locale-fi/description
-	Common UNIX Printing System - Locale fi
-endef
-
-define Package/cups-locale-sv
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale sv
-endef
-
-define Package/cups-locale-sv/description
-	Common UNIX Printing System - Locale sv
-endef
-
-define Package/cups-locale-da
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale da
-endef
-
-define Package/cups-locale-da/description
-	Common UNIX Printing System - Locale da
-endef
-
-define Package/cups-locale-ko
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale ko
-endef
-
-define Package/cups-locale-ko/description
-	Common UNIX Printing System - Locale ko
-endef
-
-define Package/cups-locale-zh
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale zh
-endef
-
-define Package/cups-locale-zh/description
-	Common UNIX Printing System - Locale zh
-endef
-
-define Package/cups-locale-ja
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale ja
-endef
-
-define Package/cups-locale-ja/description
-	Common UNIX Printing System - Locale ja
-endef
-
-define Package/cups-locale-es
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale es
-endef
-
-define Package/cups-locale-es/description
-	Common UNIX Printing System - Locale es
-endef
-
-define Package/cups-locale-zh_TW
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale zh_TW
-endef
-
-define Package/cups-locale-zh_TW/description
-	Common UNIX Printing System - Locale zh_TW
-endef
-
-define Package/cups-locale-pl
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale pl
-endef
-
-define Package/cups-locale-pl/description
-	Common UNIX Printing System - Locale pl
-endef
-
-define Package/cups-locale-no
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale no
-endef
-
-define Package/cups-locale-no/description
-	Common UNIX Printing System - Locale no
-endef
-
-define Package/cups-locale-ru
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale ru
-endef
-
-define Package/cups-locale-ru/description
-	Common UNIX Printing System - Locale ru
-endef
-
-define Package/cups-locale-eu
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale eu
-endef
-
-define Package/cups-locale-eu/description
-	Common UNIX Printing System - Locale eu
-endef
-
-define Package/cups-locale-fr
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale fr
-endef
-
-define Package/cups-locale-fr/description
-	Common UNIX Printing System - Locale fr
-endef
-
-define Package/cups-locale-it
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale it
-endef
-
-define Package/cups-locale-it/description
-	Common UNIX Printing System - Locale it
-endef
-
-define Package/cups-locale-id
-$(call Package/cups/Default)
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=Common UNIX Printing System - Locale id
-endef
-
-define Package/cups-locale-id/description
-	Common UNIX Printing System - Locale id
+define Package/cups-locales/description
+	Common UNIX Printing System - Locales
 endef
 
 define Build/Configure
@@ -391,26 +156,24 @@ define Build/Configure
 		--with-cups-user="nobody" \
 		--with-cups-group="nogroup" \
 		--with-components="embedded" \
-		--with-pdftops="none" \
+		--without-java \
 		--without-perl \
 		--without-python \
 		--without-php \
 		--enable-shared \
-		--enable-image \
 		--enable-libusb \
 		--disable-dbus \
+		--disable-avahi \
 		--disable-dnssd \
 		--disable-launchd \
+		--disable-systemd \
 		--disable-ldap \
 		--disable-pam \
-		--disable-slp \
 		--disable-gnutls \
-		--disable-openssl \
 		--disable-cdsassl \
 		--disable-ssl \
 		--disable-gssapi \
 		--disable-acl \
-		--disable-tiff, \
 		UNAME="Linux" \
 		LIBS="$(TARGET_LDFLAGS) -lz -lpng -ljpeg" \
 	)
@@ -437,31 +200,25 @@ define Package/cups/install
 	$(CP) $(PKG_INSTALL_DIR)/opt/lib/cups/daemon $(1)/opt/lib/cups
 	$(CP) $(PKG_INSTALL_DIR)/opt/lib/cups/driver $(1)/opt/lib/cups
 	$(CP) $(PKG_INSTALL_DIR)/opt/lib/cups/monitor $(1)/opt/lib/cups
-	$(INSTALL_DIR) $(1)/opt/lib/cups/filter
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/cups/filter/{commandtops,pstops} \
-		$(PKG_INSTALL_DIR)/opt/lib/cups/filter/gziptoany \
-		$(1)/opt/lib/cups/filter
-	$(INSTALL_DIR) $(1)/opt/share/cups/templates
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates/*.tmpl \
-		$(1)/opt/share/cups/templates/
+	$(INSTALL_DIR) $(1)/opt/lib/cups
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/cups/filter \
+		$(1)/opt/lib/cups/
+	$(INSTALL_DIR) $(1)/opt/share/cups
+	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates \
+		$(1)/opt/share/cups/
 	$(INSTALL_DIR) $(1)/opt/share/cups/mime
 	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/mime/* $(1)/opt/share/cups/mime/
-	$(INSTALL_DIR) $(1)/opt/share/doc/cups
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/doc/cups/index.html \
-		$(1)/opt/share/doc/cups/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/doc/cups/*.css \
-		$(1)/opt/share/doc/cups/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/doc/cups/images \
-		$(1)/opt/share/doc/cups/
 	$(INSTALL_DIR) $(1)/opt/sbin
 	# overwrite default config with our own
 	$(CP) ./files/etc/cups/* $(1)/opt/etc/cups/
-	# install initscript with priority 60
 	$(INSTALL_DIR) $(1)/opt/etc/init.d
 	$(INSTALL_BIN) ./files/S60cupsd $(1)/opt/etc/init.d/
 	$(INSTALL_BIN) \
 		$(PKG_INSTALL_DIR)/opt/sbin/{cupsctl,cupsd} \
 		$(1)/opt/sbin/
+	$(INSTALL_DIR) $(1)/opt/share/cups/{data,drv,usb}
+	$(INSTALL_DIR) $(1)/opt/var/{cache,log,run}/cups
+	$(INSTALL_DIR) $(1)/opt/var/spool/cups/tmp
 endef
 
 define Package/cups-bsd/install
@@ -475,7 +232,7 @@ define Package/cups-client/install
 	$(INSTALL_DIR) $(1)/opt/bin
 	$(INSTALL_BIN) \
 		$(PKG_INSTALL_DIR)/opt/bin/{lp,cancel,cupstestppd,cupstestdsc} \
-		$(PKG_INSTALL_DIR)/opt/bin/{ipptool,lpoptions,lpstat,lppasswd} \
+		$(PKG_INSTALL_DIR)/opt/bin/{ipptool,lpoptions,lpstat} \
 		$(1)/opt/bin/
 	$(INSTALL_DIR) $(1)/opt/sbin
 	$(INSTALL_BIN) \
@@ -483,13 +240,6 @@ define Package/cups-client/install
 		$(PKG_INSTALL_DIR)/opt/sbin/{lpadmin,lpinfo,lpmove} \
 		$(1)/opt/sbin/
 	(cd $(1)/opt/sbin; ln -sf cupsaccept accept; ln -sf cupsaccept cupsenable; ln -sf cupsaccept cupsdisable; ln -sf cupsaccept reject; ln -sf cupsaccept cupsreject;)
-endef
-
-define Package/cups-filters/install
-	$(INSTALL_DIR) $(1)/opt/lib/cups/filter
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/cups/filter/{bannertops,commandtoescpx,commandtopclx,imagetops,imagetoraster,rastertoepson,rastertopwg,rastertohp,rastertoescpx,rastertopclx,rastertolabel,texttops} \
-		$(1)/opt/lib/cups/filter
-	(cd $(1)/opt/lib/cups/filter; ln -sf rastertolabel rastertodymo;)
 endef
 
 define Package/cups-ppdc/install
@@ -509,11 +259,6 @@ define Package/libcupscgi/install
 	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libcupscgi.so* $(1)/opt/lib/
 endef
 
-define Package/libcupsdriver/install
-	$(INSTALL_DIR) $(1)/opt/lib
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libcupsdriver.so* $(1)/opt/lib/
-endef
-
 define Package/libcupsimage/install
 	$(INSTALL_DIR) $(1)/opt/lib
 	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libcupsimage.so* $(1)/opt/lib/
@@ -529,134 +274,9 @@ define Package/libcupsppdc/install
 	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libcupsppdc.so* $(1)/opt/lib/
 endef
 
-define Package/cups-locale-de/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(INSTALL_DIR) $(1)/opt/share/cups/templates
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/de $(1)/opt/share/locale/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates/de \
-		$(1)/opt/share/cups/templates/
-endef
-
-define Package/cups-locale-nl/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/nl $(1)/opt/share/locale/
-endef
-
-define Package/cups-locale-hu/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(INSTALL_DIR) $(1)/opt/share/cups/templates
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/hu $(1)/opt/share/locale/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates/hu \
-		$(1)/opt/share/cups/templates/
-endef
-
-define Package/cups-locale-pt/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/pt $(1)/opt/share/locale/
-endef
-
-define Package/cups-locale-pt_BR/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/pt_BR $(1)/opt/share/locale/
-endef
-
-define Package/cups-locale-fi/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/fi $(1)/opt/share/locale/
-endef
-
-define Package/cups-locale-sv/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/sv $(1)/opt/share/locale/
-endef
-
-define Package/cups-locale-da/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/da $(1)/opt/share/locale/
-endef
-
-define Package/cups-locale-ko/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/ko $(1)/opt/share/locale/
-endef
-
-define Package/cups-locale-zh/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/zh $(1)/opt/share/locale/
-endef
-
-define Package/cups-locale-ja/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(INSTALL_DIR) $(1)/opt/share/cups/templates
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/ja $(1)/opt/share/locale/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates/ja \
-		$(1)/opt/share/cups/templates/
-endef
-
-define Package/cups-locale-es/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(INSTALL_DIR) $(1)/opt/share/cups/templates
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/es $(1)/opt/share/locale/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates/es \
-		$(1)/opt/share/cups/templates/
-endef
-
-define Package/cups-locale-zh_TW/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/zh_TW $(1)/opt/share/locale/
-endef
-
-define Package/cups-locale-pl/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(INSTALL_DIR) $(1)/opt/share/cups/templates
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/pl $(1)/opt/share/locale/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates/pl \
-		$(1)/opt/share/cups/templates/
-endef
-
-define Package/cups-locale-no/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/no $(1)/opt/share/locale/
-endef
-
-define Package/cups-locale-ru/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(INSTALL_DIR) $(1)/opt/share/cups/templates
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/ru $(1)/opt/share/locale/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates/ru \
-		$(1)/opt/share/cups/templates/
-endef
-
-define Package/cups-locale-eu/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(INSTALL_DIR) $(1)/opt/share/cups/templates
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/eu $(1)/opt/share/locale/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates/eu \
-		$(1)/opt/share/cups/templates/
-endef
-
-define Package/cups-locale-fr/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(INSTALL_DIR) $(1)/opt/share/cups/templates
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/fr $(1)/opt/share/locale/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates/fr \
-		$(1)/opt/share/cups/templates/
-endef
-
-define Package/cups-locale-it/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(INSTALL_DIR) $(1)/opt/share/cups/templates
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/it $(1)/opt/share/locale/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates/it \
-		$(1)/opt/share/cups/templates/
-endef
-
-define Package/cups-locale-id/install
-	$(INSTALL_DIR) $(1)/opt/share/locale
-	$(INSTALL_DIR) $(1)/opt/share/cups/templates
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale/id $(1)/opt/share/locale/
-	$(CP) $(PKG_INSTALL_DIR)/opt/share/cups/templates/id \
-		$(1)/opt/share/cups/templates/
+define Package/cups-locales/install
+	$(INSTALL_DIR) $(1)/opt/share
+	$(CP) $(PKG_INSTALL_DIR)/opt/share/locale $(1)/opt/share/
 endef
 
 define Build/InstallDev
@@ -671,31 +291,10 @@ endef
 $(eval $(call BuildPackage,cups))
 $(eval $(call BuildPackage,libcups))
 $(eval $(call BuildPackage,libcupscgi))
-$(eval $(call BuildPackage,libcupsdriver))
 $(eval $(call BuildPackage,libcupsimage))
 $(eval $(call BuildPackage,libcupsmime))
 $(eval $(call BuildPackage,libcupsppdc))
 $(eval $(call BuildPackage,cups-bsd))
 $(eval $(call BuildPackage,cups-client))
-$(eval $(call BuildPackage,cups-filters))
 $(eval $(call BuildPackage,cups-ppdc))
-$(eval $(call BuildPackage,cups-locale-de))
-$(eval $(call BuildPackage,cups-locale-nl))
-$(eval $(call BuildPackage,cups-locale-hu))
-$(eval $(call BuildPackage,cups-locale-pt))
-$(eval $(call BuildPackage,cups-locale-pt_BR))
-$(eval $(call BuildPackage,cups-locale-fi))
-$(eval $(call BuildPackage,cups-locale-sv))
-$(eval $(call BuildPackage,cups-locale-da))
-$(eval $(call BuildPackage,cups-locale-ko))
-$(eval $(call BuildPackage,cups-locale-zh))
-$(eval $(call BuildPackage,cups-locale-ja))
-$(eval $(call BuildPackage,cups-locale-es))
-$(eval $(call BuildPackage,cups-locale-zh_TW))
-$(eval $(call BuildPackage,cups-locale-pl))
-$(eval $(call BuildPackage,cups-locale-no))
-$(eval $(call BuildPackage,cups-locale-ru))
-$(eval $(call BuildPackage,cups-locale-eu))
-$(eval $(call BuildPackage,cups-locale-fr))
-$(eval $(call BuildPackage,cups-locale-it))
-$(eval $(call BuildPackage,cups-locale-id))
+$(eval $(call BuildPackage,cups-locales))

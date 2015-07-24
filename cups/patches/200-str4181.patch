@@ -1,9 +1,9 @@
---- cups-1.5.4/backend/ipp.c	(revision 10596)
-+++ cups-1.5.4/backend/ipp.c	(working copy)
-@@ -1578,6 +1578,10 @@
- 	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_MIMETYPE,
- 		       "document-format", NULL, document_format);
-
+--- a/backend/ipp.c
++++ b/backend/ipp.c
+@@ -1734,6 +1734,10 @@
+ 	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD,
+ 		       "compression", NULL, compression);
+ 
 +        if (compression)
 +	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD,
 +		       "compression", NULL, compression);
