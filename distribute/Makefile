@@ -4,25 +4,24 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# To be replaced by setuptools
 
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=distribute
-PKG_VERSION:=0.6.21
+PKG_VERSION:=0.6.49
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://pypi.python.org/packages/source/d/$(PKG_NAME)/
-PKG_MD5SUM:=f783444754861f9b33e9f4083bd97b60
-PKG_BUILD_DIR:=$(BUILD_DIR_HOST)/$(PKG_NAME)-$(PKG_VERSION)/
+PKG_MD5SUM:=89e68df89faf1966bcbd99a0033fbf8e
 
-HOST_BUILD_DEPENDS:=python
+PKG_BUILD_DEPENDS:=python
 
-include $(INCLUDE_DIR)/host-build.mk
+PKG_BUILD_DIR:=$(BUILD_DIR)/distribute-$(PKG_VERSION)
+
 include $(INCLUDE_DIR)/package.mk
 $(call include_mk, python-package.mk)
-
-PYTHON:=$(HOST_PYTHON_BIN)
 
 define Package/distribute
   SUBMENU:=Python
@@ -38,32 +37,22 @@ define Package/distribute/description
   Distribute (fork of Setuptools) is a collection of extensions to Distutils
 endef
 
-define Host/Compile
-	$(call Build/Compile/PyMod,,install --prefix=/opt --root=$(PKG_INSTALL_DIR))
-endef
-
-define Host/Install
-	$(INSTALL_DIR) $(STAGING_DIR)$(PYTHON_PKG_DIR)
-	$(CP) \
-	    $(PKG_INSTALL_DIR)$(PYTHON_PKG_DIR)/* \
-	    $(STAGING_DIR)$(PYTHON_PKG_DIR)/
-endef
-
 define Build/Compile
-	$(call Build/Compile/PyMod,,install --prefix=/opt --root=$(PKG_INSTALL_DIR))
+	$(call Build/Compile/PyMod,,\
+		install --prefix="$(PKG_INSTALL_DIR)/opt" \
+	)
 endef
 
-define Package/distribute/install
+define PyPackage/distribute/install
 	$(INSTALL_DIR) $(1)$(PYTHON_PKG_DIR)
 	$(CP) \
 	    $(PKG_INSTALL_DIR)$(PYTHON_PKG_DIR)/* \
 	    $(1)$(PYTHON_PKG_DIR)/
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) \
-	    $(PKG_INSTALL_DIR)/opt/bin/easy_install \
-	    $(1)/opt/bin/
-	$(SED) '1s/#\!.*/#\!\/opt\/bin\/python/' $(1)/opt/bin/easy_install
+	    $(CP) $(PKG_INSTALL_DIR)/opt/bin/easy_install{,-2.7} $(1)/opt/bin/
+	$(SED) 's,$(HOST_PYTHON_BIN),/opt/bin/python,g' \
+	    $(1)/opt/bin/easy_install{,-2.7}
 endef
 
-$(eval $(call HostBuild))
+$(eval $(call PyPackage,distribute))
 $(eval $(call BuildPackage,distribute))
