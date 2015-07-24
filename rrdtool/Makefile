@@ -4,6 +4,8 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# This is the last version without Cairo/Pango libs,
+# which are X libs depending on even more X libs and X configurations.
 
 include $(TOPDIR)/rules.mk
 
