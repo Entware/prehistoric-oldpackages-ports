@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cutter
-PKG_VERSION:=1.03
-PKG_RELEASE:=2
+PKG_VERSION:=1.04
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tgz
-PKG_SOURCE_URL:=http://www.lowth.com/cutter/software/
-PKG_MD5SUM:=50093db9b64277643969ee75b83ebbd1
+PKG_SOURCE_URL:=http://www.digitage.co.uk/digitage/files/cutter
+PKG_MD5SUM:=0efbf3c62ab0bdba39b083ad023914de
 
 include $(INCLUDE_DIR)/package.mk
 
