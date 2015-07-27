@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ipv6calc
-PKG_VERSION:=0.93.1
+PKG_VERSION:=0.99.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.bieringer.de/pub/linux/IPv6/ipv6calc
-PKG_MD5SUM:=9a5b7fdd1a90cd621dc43623976d912a
+PKG_MD5SUM:=8d645f83492b739e8def05dccee53897
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(BUILD_VARIANT)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_INSTALL:=1
@@ -81,6 +81,15 @@ define Package/ipv6log-mini/description
   helper programs with the internal databases disabled.
 endef
 
+CONFIGURE_ARGS += \
+	--disable-compiler-warning-to-error \
+	--with-dbip-db=/opt/share/DBIP \
+	--with-external-db=/opt/share/ipv6calc/db \
+	--with-ip2location-db=/opt/share/IP2Location \
+	--with-geoip-db=/opt/share/GeoIP \
+	--enable-bundled-md5 \
+	--enable-bundled-getopt
+
 ifeq ($(BUILD_VARIANT),full)
 	CONFIGURE_ARGS += \
 		--enable-db-ieee \
@@ -92,7 +101,8 @@ ifeq ($(BUILD_VARIANT),mini)
 	CONFIGURE_ARGS += \
 		--disable-db-ieee \
 		--disable-db-ipv4 \
-		--disable-db-ipv6
+		--disable-db-ipv6 \
+		--disable-db-as-registry
 endif
 
 MAKE_FLAGS += \
@@ -102,6 +112,7 @@ MAKE_FLAGS += \
 define Package/ipv6calc/install
 	$(INSTALL_DIR) $(1)/opt/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/ipv6calc $(1)/opt/bin/
+	$(INSTALL_DIR) $(1)/opt/share/{ipv6calc/db,GeoIP,IP2Location,DBIP}
 endef
 
 Package/ipv6calc-mini/install = $(Package/ipv6calc/install)
