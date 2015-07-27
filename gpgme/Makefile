@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gpgme
-PKG_VERSION:=1.4.3
+PKG_VERSION:=1.5.5
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=ftp://ftp.gnupg.org/gcrypt/gpgme/
-PKG_MD5SUM:=334e524cffa8af4e2f43ae8afe585672
+PKG_MD5SUM:=a56df7028a0814ef57d77262898ca040
 
 PKG_INSTALL:=1
 
@@ -61,7 +61,7 @@ define Build/InstallDev
 	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libgpgme{,-pthread}.{a,so*} $(1)/opt/lib/
 	
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(CP) $(PKG_INSTALL_DIR)/opt/bin/* $(1)/opt/bin
+	$(CP) $(PKG_INSTALL_DIR)/opt/bin/gpgme-config $(1)/opt/bin
 endef
 
 define Package/libgpgme/install
