@@ -7,12 +7,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=flite
-PKG_VERSION:=1.3-release
-PKG_RELEASE:=2
+PKG_VERSION:=1.4-release
+PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://www.speech.cs.cmu.edu/flite/packed/flite-1.3/
-PKG_MD5SUM:=ae0aca1cb7b4801f4372f3a75a9e52b5
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE_URL:=http://www.speech.cs.cmu.edu/flite/packed/flite-1.4/
+PKG_MD5SUM:=b7c3523b3bbc6f29ce61e6650cd9a428
 
 PKG_BUILD_PARALLEL:=1
 PKG_INSTALL:=1
@@ -22,7 +22,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/flite
   SECTION:=sound
   CATEGORY:=Sound
-  DEPENDS:=@!GCC_VERSION_3_4_6
+  DEPENDS:=+alsa-lib
   TITLE:=Text-to-speech for embedded systems
   URL:=http://www.speech.cs.cmu.edu/flite/index.html
 endef
@@ -38,7 +38,7 @@ TARGET_LDFLAGS += -lm
 define Build/Configure
 	$(call Build/Configure/Default, \
 		--enable-shared \
-		--with-audio="oss" \
+		--with-audio="alsa" \
 		--with-vox="cmu_us_kal16" \
 		--prefix="$(PKG_INSTALL_DIR)/opt" \
 		--exec-prefix="$(PKG_INSTALL_DIR)/opt" \
@@ -46,17 +46,9 @@ define Build/Configure
 	)
 endef
 
-define Build/InstallDev
-	$(INSTALL_DIR) $(1)/opt/include/flite
-	$(CP) $(PKG_INSTALL_DIR)/opt/include/flite/{cst,flite}*.h $(1)/opt/include/flite/
-	$(INSTALL_DIR) $(1)/opt/lib
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libflite*.so.* $(1)/opt/lib/
-endef
-
 define Package/flite/install
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/flite \
-		$(PKG_INSTALL_DIR)/opt/bin/flite_time $(1)/opt/bin/
+	$(CP) $(PKG_INSTALL_DIR)/opt/bin/flite* $(1)/opt/bin/
 	$(INSTALL_DIR) $(1)/opt/lib
 	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libflite*.so.* $(1)/opt/lib/
 endef
