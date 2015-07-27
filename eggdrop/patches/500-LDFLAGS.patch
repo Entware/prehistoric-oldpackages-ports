@@ -1,11 +1,11 @@
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -37,7 +37,7 @@
+@@ -46,7 +46,7 @@
  
- # Linker
- LD = @CC@
+ # make 'modegg'
+ MOD_CC = @MOD_CC@
 -MOD_LD = @MOD_LD@
 +MOD_LD = @MOD_LD@ @LDFLAGS@
- SHLIB_LD = @SHLIB_LD@
+ MOD_STRIP = @MOD_STRIP@
  
- # Stripping
+ # make 'modules'
