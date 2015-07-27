@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=knock
-PKG_VERSION:=0.5
+PKG_VERSION:=0.7
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.zeroflux.org/proj/knock/files/
-PKG_MD5SUM:=ca09d61458974cff90a700aba6120891
+PKG_MD5SUM:=cb6373fd4ccb42eeca3ff406b7fdb8a7
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -70,13 +70,13 @@ define Build/Configure
         )
 endef
 	
-define Build/Compile	
+define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
 		DESTDIR="$(PKG_INSTALL_DIR)" \
 		all install
 endef
 	
-define Package/knock/install	
+define Package/knock/install
 	$(INSTALL_DIR) $(1)/opt/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/knock $(1)/opt/bin/
 endef
@@ -84,7 +84,7 @@ endef
 define Package/knockd/install
 	$(INSTALL_DIR) $(1)/opt/etc/init.d
 	$(INSTALL_BIN) ./files/S05knockd $(1)/opt/etc/init.d
-	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/etc/knockd.conf $(1)/opt/etc/
+	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/opt/etc/knockd.conf $(1)/opt/etc/
 	$(INSTALL_DIR) $(1)/opt/sbin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/knockd $(1)/opt/sbin/
 endef
