@@ -5,7 +5,7 @@
  		echo Configuring BIND Export libraries for DHCP. ; \
  		rm -rf ./lib ./include ./configure.log ./build.log ./install.log ; \
 -		(cd ${bindsrcdir} && ./configure --disable-kqueue --disable-epoll --disable-devpoll --without-openssl --without-libxml2 --enable-exportlib --enable-threads=no --with-export-includedir=${binddir}/include --with-export-libdir=${binddir}/lib --with-gssapi=no > ${binddir}/configure.log); \
-+		(cd ${bindsrcdir} && export CC=${CROSS_CC} && ./configure  --disable-atomic --disable-kqueue --disable-epoll --disable-devpoll --without-openssl --without-libxml2 --enable-exportlib --enable-threads=no --with-export-includedir=${binddir}/include --with-export-libdir=${binddir}/lib --with-gssapi=no > ${binddir}/configure.log); \
++		(cd ${bindsrcdir} && export CC=${CROSS_CC} && ./configure  --disable-atomic --disable-kqueue --disable-epoll --disable-devpoll --without-openssl --without-libxml2 --enable-exportlib --enable-threads=no --with-export-includedir=${binddir}/include --with-export-libdir=${binddir}/lib --with-gssapi=no --without-randomdev > ${binddir}/configure.log); \
  	fi
  
  # Build and install the export libraries

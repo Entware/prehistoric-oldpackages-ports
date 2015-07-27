@@ -9,12 +9,12 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=isc-dhcp
 UPSTREAM_NAME:=dhcp
-PKG_VERSION:=4.2.4
-PKG_RELEASE:=3
+PKG_VERSION:=4.3.2
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(UPSTREAM_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.isc.org/isc/dhcp/$(PKG_VERSION)
-PKG_MD5SUM:=c244cefe663d43100af757d8ff625a1f
+PKG_MD5SUM:=5a284875dd2c12ddd388416d69156a67
 
 PKG_FIXUP:=autoreconf
 PKG_BUILD_PARALLEL:=1
@@ -158,6 +158,7 @@ CONFIGURE_ARGS += \
 	--disable-tracing 		\
 	--enable-paranoia		\
 	--disable-dependency-tracking	\
+	--with-randomdev=/dev/urandom \
 	ac_cv_file__dev_random=yes
 
 ifeq ($(BUILD_VARIANT),ipv4)
@@ -175,7 +176,6 @@ define Build/Compile
 		host_alias="$(GNU_TARGET_NAME)"		\
 		target_alias="$(GNU_TARGET_NAME)"	\
 		build_alias="$(GNU_HOST_NAME)"		\
-		ac_cv_file__dev_random=yes		\
 		all install-exec
 endef
 
