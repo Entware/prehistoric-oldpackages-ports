@@ -1,0 +1,17 @@
+--- a/src/imapfilter.c
++++ b/src/imapfilter.c
+@@ -54,10 +54,10 @@
+ 	opts.debug = NULL;
+ 
+ 	opts.truststore = NULL;
+-	if (exists_dir("/etc/ssl/certs"))
+-		opts.truststore = "/etc/ssl/certs";
+-	else if (exists_file("/etc/ssl/cert.pem"))
+-		opts.truststore = "/etc/ssl/cert.pem";
++	if (exists_dir("/opt/etc/ssl/certs"))
++		opts.truststore = "/opt/etc/ssl/certs";
++	else if (exists_file("/opt/etc/ssl/cert.pem"))
++		opts.truststore = "/opt/etc/ssl/cert.pem";
+ 
+ 	env.home = NULL;
+ 	env.pathmax = -1;
