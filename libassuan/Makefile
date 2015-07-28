@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libassuan
-PKG_VERSION:=2.0.2
+PKG_VERSION:=2.2.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=ftp://ftp.gnupg.org/gcrypt/libassuan/
-PKG_MD5SUM:=3e7d00fd2ee8a0b9c51ac7616ef3f1ec
+#PKG_MD5SUM:=3e7d00fd2ee8a0b9c51ac7616ef3f1ec
 
 PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
@@ -41,7 +41,6 @@ CONFIGURE_ARGS += \
 	--enable-shared \
 	--enable-static \
 	--with-gpg-error-prefix="$(STAGING_DIR)/opt" \
-	--without-pth-test \
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/opt/include
@@ -58,7 +57,7 @@ endef
 
 define Package/libassuan/install
 	$(INSTALL_DIR) $(1)/opt/lib
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libassuan*.so.* $(1)/opt/lib/
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libassuan.so.* $(1)/opt/lib/
 endef
 
 $(eval $(call BuildPackage,libassuan))
