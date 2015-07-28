@@ -4,9 +4,9 @@
 
 Index: libcrypto++/misc.h
 ===================================================================
---- libcrypto++.orig/misc.h	2009-04-07 02:48:55.000000000 +0200
-+++ libcrypto++/misc.h	2009-04-07 02:50:56.000000000 +0200
-@@ -40,6 +40,7 @@
+--- libcrypto++.orig/misc.h	2010-08-09 20:42:43.000000000 +0200
++++ libcrypto++/misc.h	2010-08-09 20:42:47.000000000 +0200
+@@ -39,6 +39,7 @@
  #if defined(__GNUC__) && defined(__linux__)
  #define CRYPTOPP_BYTESWAP_AVAILABLE
  #include <byteswap.h>

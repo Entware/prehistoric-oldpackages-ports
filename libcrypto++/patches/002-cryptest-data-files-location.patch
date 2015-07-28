@@ -4,9 +4,9 @@
 
 Index: libcrypto++/bench2.cpp
 ===================================================================
---- libcrypto++.orig/bench2.cpp	2009-04-07 03:08:36.000000000 +0200
-+++ libcrypto++/bench2.cpp	2009-04-07 03:23:43.000000000 +0200
-@@ -245,44 +245,44 @@
+--- libcrypto++.orig/bench2.cpp	2010-08-11 17:25:57.000000000 +0200
++++ libcrypto++/bench2.cpp	2010-08-11 17:26:03.000000000 +0200
+@@ -237,44 +237,44 @@
  	cout << "<THEAD><TR><TH>Operation<TH>Milliseconds/Operation" << (g_hertz ? "<TH>Megacycles/Operation" : "") << endl;
  
  	cout << "\n<TBODY style=\"background: yellow\">";
@@ -78,13 +78,22 @@ Index: libcrypto++/bench2.cpp
 +	BenchMarkKeyAgreement<LUC_DH>(PACKAGE_DATA_DIR "TestData/lucd1024.dat", "LUCDIF 1024", t);
 +	BenchMarkKeyAgreement<MQV>(PACKAGE_DATA_DIR "TestData/mqv1024.dat", "MQV 1024", t);
 +	BenchMarkKeyAgreement<MQV>(PACKAGE_DATA_DIR "TestData/mqv2048.dat", "MQV 2048", t);
- 
+ #endif
  	cout << "\n<TBODY style=\"background: white\">";
  	{
 Index: libcrypto++/test.cpp
 ===================================================================
---- libcrypto++.orig/test.cpp	2009-04-07 03:08:36.000000000 +0200
-+++ libcrypto++/test.cpp	2009-04-07 03:24:04.000000000 +0200
+--- libcrypto++.orig/test.cpp	2010-08-11 17:25:57.000000000 +0200
++++ libcrypto++/test.cpp	2010-08-11 17:26:20.000000000 +0200
+@@ -251,7 +251,7 @@
+ 		{
+ 			std::string fname = argv[2];
+ 			if (fname.find(".txt") == std::string::npos)
+-				fname = "TestVectors/" + fname + ".txt";
++				fname = PACKAGE_DATA_DIR "TestVectors/" + fname + ".txt";
+ 			return !RunTestDataFile(fname.c_str());
+ 		}
+ 		else if (command == "t")
 @@ -337,7 +337,7 @@
  			AES_CTR_Encrypt(argv[2], argv[3], argv[4], argv[5]);
  		else if (command == "h")
@@ -96,9 +105,20 @@ Index: libcrypto++/test.cpp
  		else if (command == "V")
 Index: libcrypto++/validat1.cpp
 ===================================================================
---- libcrypto++.orig/validat1.cpp	2009-04-07 03:08:36.000000000 +0200
-+++ libcrypto++/validat1.cpp	2009-04-07 03:25:57.000000000 +0200
-@@ -508,12 +508,12 @@
+--- libcrypto++.orig/validat1.cpp	2010-08-11 17:25:57.000000000 +0200
++++ libcrypto++/validat1.cpp	2010-08-11 17:26:03.000000000 +0200
+@@ -93,8 +93,8 @@
+ 	pass=ValidateCCM() && pass;
+ 	pass=ValidateGCM() && pass;
+ 	pass=ValidateCMAC() && pass;
+-	pass=RunTestDataFile("TestVectors/eax.txt") && pass;
+-	pass=RunTestDataFile("TestVectors/seed.txt") && pass;
++	pass=RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/eax.txt") && pass;
++	pass=RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/seed.txt") && pass;
+ 
+ 	pass=ValidateBBS() && pass;
+ 	pass=ValidateDH() && pass;
+@@ -511,12 +511,12 @@
  {
  	cout << "\nDES validation suite running...\n\n";
  
@@ -113,7 +133,7 @@ Index: libcrypto++/validat1.cpp
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<DES_EDE2_Encryption, DES_EDE2_Decryption>(), valdata1, 1) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<DES_EDE3_Encryption, DES_EDE3_Decryption>(), valdata1, 1) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<DES_XEX3_Encryption, DES_XEX3_Decryption>(), valdata1, 1) && pass;
-@@ -855,7 +855,7 @@
+@@ -858,7 +858,7 @@
  {
  	cout << "\nIDEA validation suite running...\n\n";
  
@@ -122,7 +142,7 @@ Index: libcrypto++/validat1.cpp
  	return BlockTransformationTest(FixedRoundsCipherFactory<IDEAEncryption, IDEADecryption>(), valdata);
  }
  
-@@ -863,7 +863,7 @@
+@@ -866,7 +866,7 @@
  {
  	cout << "\nSAFER validation suite running...\n\n";
  
@@ -131,7 +151,7 @@ Index: libcrypto++/validat1.cpp
  	bool pass = true;
  	pass = BlockTransformationTest(VariableRoundsCipherFactory<SAFER_K_Encryption, SAFER_K_Decryption>(8,6), valdata, 4) && pass;
  	pass = BlockTransformationTest(VariableRoundsCipherFactory<SAFER_K_Encryption, SAFER_K_Decryption>(16,12), valdata, 4) && pass;
-@@ -876,7 +876,7 @@
+@@ -879,7 +879,7 @@
  {
  	cout << "\nRC2 validation suite running...\n\n";
  
@@ -140,7 +160,7 @@ Index: libcrypto++/validat1.cpp
  	HexEncoder output(new FileSink(cout));
  	SecByteBlock plain(RC2Encryption::BLOCKSIZE), cipher(RC2Encryption::BLOCKSIZE), out(RC2Encryption::BLOCKSIZE), outplain(RC2Encryption::BLOCKSIZE);
  	SecByteBlock key(128);
-@@ -1086,7 +1086,7 @@
+@@ -1089,7 +1089,7 @@
  {
  	cout << "\nRC5 validation suite running...\n\n";
  
@@ -149,7 +169,7 @@ Index: libcrypto++/validat1.cpp
  	return BlockTransformationTest(VariableRoundsCipherFactory<RC5Encryption, RC5Decryption>(16, 12), valdata);
  }
  
-@@ -1094,7 +1094,7 @@
+@@ -1097,7 +1097,7 @@
  {
  	cout << "\nRC6 validation suite running...\n\n";
  
@@ -158,7 +178,7 @@ Index: libcrypto++/validat1.cpp
  	bool pass = true;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<RC6Encryption, RC6Decryption>(16), valdata, 2) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<RC6Encryption, RC6Decryption>(24), valdata, 2) && pass;
-@@ -1106,7 +1106,7 @@
+@@ -1109,7 +1109,7 @@
  {
  	cout << "\nMARS validation suite running...\n\n";
  
@@ -167,7 +187,7 @@ Index: libcrypto++/validat1.cpp
  	bool pass = true;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<MARSEncryption, MARSDecryption>(16), valdata, 4) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<MARSEncryption, MARSDecryption>(24), valdata, 3) && pass;
-@@ -1118,7 +1118,7 @@
+@@ -1121,12 +1121,12 @@
  {
  	cout << "\nRijndael (AES) validation suite running...\n\n";
  
@@ -176,7 +196,13 @@ Index: libcrypto++/validat1.cpp
  	bool pass = true;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<RijndaelEncryption, RijndaelDecryption>(16), valdata, 4) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<RijndaelEncryption, RijndaelDecryption>(24), valdata, 3) && pass;
-@@ -1131,7 +1131,7 @@
+ 	pass = BlockTransformationTest(FixedRoundsCipherFactory<RijndaelEncryption, RijndaelDecryption>(32), valdata, 2) && pass;
+-	pass = RunTestDataFile("TestVectors/aes.txt") && pass;
++	pass = RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/aes.txt") && pass;
+ 	return pass;
+ }
+ 
+@@ -1134,7 +1134,7 @@
  {
  	cout << "\nTwofish validation suite running...\n\n";
  
@@ -185,7 +211,7 @@ Index: libcrypto++/validat1.cpp
  	bool pass = true;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<TwofishEncryption, TwofishDecryption>(16), valdata, 4) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<TwofishEncryption, TwofishDecryption>(24), valdata, 3) && pass;
-@@ -1143,7 +1143,7 @@
+@@ -1146,7 +1146,7 @@
  {
  	cout << "\nSerpent validation suite running...\n\n";
  
@@ -194,7 +220,7 @@ Index: libcrypto++/validat1.cpp
  	bool pass = true;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<SerpentEncryption, SerpentDecryption>(16), valdata, 4) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<SerpentEncryption, SerpentDecryption>(24), valdata, 3) && pass;
-@@ -1189,7 +1189,7 @@
+@@ -1192,7 +1192,7 @@
  {
  	cout << "\n3-WAY validation suite running...\n\n";
  
@@ -203,7 +229,7 @@ Index: libcrypto++/validat1.cpp
  	return BlockTransformationTest(FixedRoundsCipherFactory<ThreeWayEncryption, ThreeWayDecryption>(), valdata);
  }
  
-@@ -1197,7 +1197,7 @@
+@@ -1200,7 +1200,7 @@
  {
  	cout << "\nGOST validation suite running...\n\n";
  
@@ -212,7 +238,7 @@ Index: libcrypto++/validat1.cpp
  	return BlockTransformationTest(FixedRoundsCipherFactory<GOSTEncryption, GOSTDecryption>(), valdata);
  }
  
-@@ -1205,7 +1205,7 @@
+@@ -1208,7 +1208,7 @@
  {
  	cout << "\nSHARK validation suite running...\n\n";
  
@@ -221,7 +247,7 @@ Index: libcrypto++/validat1.cpp
  	return BlockTransformationTest(FixedRoundsCipherFactory<SHARKEncryption, SHARKDecryption>(), valdata);
  }
  
-@@ -1215,14 +1215,14 @@
+@@ -1218,14 +1218,14 @@
  
  	cout << "\nCAST-128 validation suite running...\n\n";
  
@@ -238,7 +264,7 @@ Index: libcrypto++/validat1.cpp
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<CAST256Encryption, CAST256Decryption>(16), val256, 1) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<CAST256Encryption, CAST256Decryption>(24), val256, 1) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<CAST256Encryption, CAST256Decryption>(32), val256, 1) && pass;
-@@ -1234,7 +1234,7 @@
+@@ -1237,7 +1237,7 @@
  {
  	cout << "\nSquare validation suite running...\n\n";
  
@@ -247,7 +273,7 @@ Index: libcrypto++/validat1.cpp
  	return BlockTransformationTest(FixedRoundsCipherFactory<SquareEncryption, SquareDecryption>(), valdata);
  }
  
-@@ -1242,7 +1242,7 @@
+@@ -1245,7 +1245,7 @@
  {
  	cout << "\nSKIPJACK validation suite running...\n\n";
  
@@ -256,7 +282,7 @@ Index: libcrypto++/validat1.cpp
  	return BlockTransformationTest(FixedRoundsCipherFactory<SKIPJACKEncryption, SKIPJACKDecryption>(), valdata);
  }
  
-@@ -1346,7 +1346,7 @@
+@@ -1349,7 +1349,7 @@
  	cout << "\nSHACAL-2 validation suite running...\n\n";
  
  	bool pass = true;
@@ -265,7 +291,7 @@ Index: libcrypto++/validat1.cpp
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<SHACAL2Encryption, SHACAL2Decryption>(16), valdata, 4) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<SHACAL2Encryption, SHACAL2Decryption>(64), valdata, 10) && pass;
  	return pass;
-@@ -1357,7 +1357,7 @@
+@@ -1360,7 +1360,7 @@
  	cout << "\nCamellia validation suite running...\n\n";
  
  	bool pass = true;
@@ -274,7 +300,7 @@ Index: libcrypto++/validat1.cpp
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<CamelliaEncryption, CamelliaDecryption>(16), valdata, 15) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<CamelliaEncryption, CamelliaDecryption>(24), valdata, 15) && pass;
  	pass = BlockTransformationTest(FixedRoundsCipherFactory<CamelliaEncryption, CamelliaDecryption>(32), valdata, 15) && pass;
-@@ -1368,19 +1368,19 @@
+@@ -1371,38 +1371,38 @@
  {
  	cout << "\nSalsa validation suite running...\n";
  
@@ -297,10 +323,33 @@ Index: libcrypto++/validat1.cpp
  }
  
  bool ValidateCCM()
+ {
+ 	cout << "\nAES/CCM validation suite running...\n";
+-	return RunTestDataFile("TestVectors/ccm.txt");
++	return RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/ccm.txt");
+ }
+ 
+ bool ValidateGCM()
+ {
+ 	cout << "\nAES/GCM validation suite running...\n";
+ 	cout << "\n2K tables:";
+-	bool pass = RunTestDataFile("TestVectors/gcm.txt", MakeParameters(Name::TableSize(), (int)2048));
++	bool pass = RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/gcm.txt", MakeParameters(Name::TableSize(), (int)2048));
+ 	cout << "\n64K tables:";
+-	return RunTestDataFile("TestVectors/gcm.txt", MakeParameters(Name::TableSize(), (int)64*1024)) && pass;
++	return RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/gcm.txt", MakeParameters(Name::TableSize(), (int)64*1024)) && pass;
+ }
+ 
+ bool ValidateCMAC()
+ {
+ 	cout << "\nCMAC validation suite running...\n";
+-	return RunTestDataFile("TestVectors/cmac.txt");
++	return RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/cmac.txt");
+ }
 Index: libcrypto++/validat2.cpp
 ===================================================================
---- libcrypto++.orig/validat2.cpp	2009-04-07 03:08:36.000000000 +0200
-+++ libcrypto++/validat2.cpp	2009-04-07 03:28:02.000000000 +0200
+--- libcrypto++.orig/validat2.cpp	2010-08-11 17:25:57.000000000 +0200
++++ libcrypto++/validat2.cpp	2010-08-11 17:26:03.000000000 +0200
 @@ -268,7 +268,7 @@
  			"\x69\x94\xac\x04\xf3\x41\xb5\x7d\x05\x20\x2d\x42\x8f\xb2\xa2\x7b"
  			"\x5c\x77\xdf\xd9\xb1\x5b\xfc\x3d\x55\x93\x53\x50\x34\x10\xc1\xe1";
@@ -479,22 +528,45 @@ Index: libcrypto++/validat2.cpp
  
 Index: libcrypto++/validat3.cpp
 ===================================================================
---- libcrypto++.orig/validat3.cpp	2009-04-07 03:08:36.000000000 +0200
-+++ libcrypto++/validat3.cpp	2009-04-07 03:29:42.000000000 +0200
-@@ -365,14 +365,14 @@
+--- libcrypto++.orig/validat3.cpp	2010-08-11 17:25:57.000000000 +0200
++++ libcrypto++/validat3.cpp	2010-08-11 17:26:20.000000000 +0200
+@@ -168,13 +168,13 @@
+ bool ValidateSHA()
  {
- 	cout << "\nPanama validation suite running...\n";
+ 	cout << "\nSHA validation suite running...\n\n";
+-	return RunTestDataFile("TestVectors/sha.txt");
++	return RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/sha.txt");
+ }
  
+ bool ValidateSHA2()
+ {
+ 	cout << "\nSHA validation suite running...\n\n";
+-	return RunTestDataFile("TestVectors/sha.txt");
++	return RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/sha.txt");
+ }
+ 
+ bool ValidateTiger()
+@@ -321,12 +321,12 @@
+ 
+ bool ValidatePanama()
+ {
 -	return RunTestDataFile("TestVectors/panama.txt");
 +	return RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/panama.txt");
  }
  
  bool ValidateWhirlpool()
  {
- 	cout << "\nWhirlpool Hash Function validation suite running...\n";
- 
 -	return RunTestDataFile("TestVectors/whrlpool.txt");
 +	return RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/whrlpool.txt");
+ }
+ 
+ #ifdef CRYPTOPP_REMOVED
+@@ -393,7 +393,7 @@
+ 
+ bool ValidateHMAC()
+ {
+-	return RunTestDataFile("TestVectors/hmac.txt");
++	return RunTestDataFile(PACKAGE_DATA_DIR "TestVectors/hmac.txt");
  }
  
  #ifdef CRYPTOPP_REMOVED
