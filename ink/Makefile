@@ -25,6 +25,9 @@ define Package/ink
   DEPENDS:=+libinklevel
 endef
 
+TARGET_LDFLAGS += \
+	-lusb
+
 define Package/ink/install
 	$(INSTALL_DIR) $(1)/opt/bin
 	$(CP) $(PKG_INSTALL_DIR)/opt/bin/ink $(1)/opt/bin/
