@@ -1,3 +1,6 @@
+# Can't upgrade to 4.x because API has changed significantly
+# https://otr.cypherpunks.ca/UPGRADING-libotr-4.1.0.txt
+
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libotr
