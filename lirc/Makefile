@@ -4,17 +4,19 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# 0.9.2 build scripts are broken
 
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=lirc
-PKG_VERSION:=0.8.7
+PKG_VERSION:=0.9.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=@SF/${PKG_NAME}
-PKG_MD5SUM:=fb1dcddbc8ca3d03c7f3a2d40cf28b71
+PKG_SOURCE_URL:=@SF/$(PKG_NAME)
+PKG_MD5SUM:=3b78c3cc872d5e2fa78b796c2efd46db
 
+PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -27,6 +29,7 @@ endef
 
 define Package/lirc
     $(call Package/lirc/Default)
+    DEPENDS:=+libusb-compat +libftdi +alsa-lib
     TITLE:=LIRC - Linux Infrared Remote Control
     MENU:=1
 endef
@@ -58,13 +61,10 @@ endef
 
 CONFIGURE_ARGS += \
 	--enable-sandboxed \
-	--with-driver="mceusb" \
-	--with-gnu-ld \
-	--with-kerneldir="$(LINUX_DIR)" \
-	--with-pic \
 	--without-x \
-	--disable-nls \
-	--disable-static
+	--with-kerneldir=$(LINUX_DIR) \
+	--with-driver="userspace" \
+	ac_cv_file__usr_lib_systemd_system=no
 
 define Package/lirc/conffiles
 /opt/etc/lircd.conf
@@ -75,30 +75,37 @@ MAKE_FLAGS += \
 	SUBDIRS="daemons tools"
 
 define Package/lirc/install
-	$(INSTALL_DIR) $(1)/opt/sbin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/daemons/lircd $(1)/opt/sbin/
-	$(INSTALL_DIR) $(1)/opt/etc
-	$(INSTALL_CONF) $(PKG_BUILD_DIR)/contrib/lircd.conf $(1)/opt/etc/
+	$(INSTALL_DIR) $(1)/opt/sbin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/lircd $(1)/opt/sbin
+	$(INSTALL_DIR) $(1)/opt/etc/lirc
+	$(INSTALL_CONF) \
+	    $(PKG_INSTALL_DIR)/opt/etc/lirc/lirc{d,_options}.conf \
+	    $(1)/opt/etc/lirc
 endef
-#todo:
-#	$(CP) $(PKG_BUILD_DIR)/drivers/lirc_dev/lirc_dev.ko
-#	$(CP) $(PKG_BUILD_DIR)/drivers/lirc_mceusb2/lirc_mceusb2.ko
-#depends on the selected module
 
 define Package/lircdaemonadd/install
-	$(INSTALL_DIR) $(1)/opt/sbin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/daemons/irrecord $(1)/opt/sbin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/daemons/lircmd $(1)/opt/sbin/
+	$(INSTALL_DIR) $(1)/opt/bin
+	$(INSTALL_BIN) \
+	    $(PKG_INSTALL_DIR)/opt/bin/irrecord \
+	    $(1)/opt/bin
+	$(INSTALL_DIR) $(1)/opt/sbin
+	$(INSTALL_BIN) \
+	    $(PKG_INSTALL_DIR)/opt/sbin/lircmd \
+	    $(1)/opt/sbin
+	$(INSTALL_DIR) $(1)/opt/etc/lirc
+	$(INSTALL_CONF) \
+	    $(PKG_INSTALL_DIR)/opt/etc/lirc/lircmd.conf \
+	    $(1)/opt/etc/lirc
 endef
 
 define Package/lirctools/install
-	$(INSTALL_DIR) $(1)/opt/sbin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tools/irsend $(1)/opt/sbin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tools/irw $(1)/opt/sbin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tools/mode2 $(1)/opt/sbin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tools/.libs/irexec $(1)/opt/sbin/
-	$(INSTALL_DIR) $(1)/opt/lib/
-	$(CP) $(PKG_BUILD_DIR)/tools/.libs/liblirc_client.so* $(1)/opt/lib/
+	$(INSTALL_DIR) $(1)/opt/bin
+	$(INSTALL_BIN) \
+	    $(PKG_INSTALL_DIR)/opt/bin/ir{cat,exec,pty,send,w} \
+	    $(PKG_INSTALL_DIR)/opt/bin/{lircrcd,mode2,pronto2lirc} \
+	    $(1)/opt/bin
+	$(INSTALL_DIR) $(1)/opt/lib
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/liblirc_client.so* $(1)/opt/lib
 endef
 
 $(eval $(call BuildPackage,lirc))
