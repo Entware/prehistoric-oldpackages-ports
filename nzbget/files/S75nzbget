@@ -2,7 +2,7 @@
 
 ENABLED=yes
 PROCS=nzbget
-ARGS="-D -c /opt/etc/nzbget.conf"
+ARGS="-D -c /opt/share/nzbget/nzbget.conf"
 PREARGS=""
 DESC=$PROCS
 PATH=/opt/sbin:/opt/bin:/opt/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
