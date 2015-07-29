@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tesseract-ocr
-PKG_VERSION:=3.04
+PKG_VERSION:=3.04.00
 PKG_REV:=228317caa1ced217e6d264aafc901f361ecd7e90
 PKG_RELEASE:=1
 
