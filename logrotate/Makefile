@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=logrotate
-PKG_VERSION:=3.8.1
+PKG_VERSION:=3.8.7
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)_$(PKG_VERSION).orig.tar.gz
@@ -17,7 +17,7 @@ PKG_SOURCE_URL:= \
 	http://ftp.de.debian.org/debian/pool/main/l/logrotate \
 	http://ftp.fr.debian.org/debian/pool/main/l/logrotate \
 	http://ftp.us.debian.org/debian/pool/main/l/logrotate
-PKG_MD5SUM:=bd2e20d8dc644291b08f9215397d28a5
+PKG_MD5SUM:=99e08503ef24c3e2e3ff74cc5f3be213
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -53,7 +53,7 @@ define Build/Compile
 	)
 endef
 
-define Package/logrotate/install	
+define Package/logrotate/install
 	$(INSTALL_DIR) $(1)/opt/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/logrotate $(1)/opt/sbin/
 	$(INSTALL_DIR) $(1)/opt/etc/logrotate.d
