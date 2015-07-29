@@ -8,13 +8,16 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tesseract-ocr
-PKG_VERSION:=3.02.02
+PKG_VERSION:=3.04.00
+PKG_REV:=228317caa1ced217e6d264aafc901f361ecd7e90
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://tesseract-ocr.googlecode.com/files/
-PKG_MD5SUM:=26adc8154f0e815053816825dde246e6
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE_URL:=https://github.com/tesseract-ocr/tesseract
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_VERSION:=$(PKG_REV)
+
 
 PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
@@ -25,8 +28,8 @@ define Package/tesseract
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=Tesseract Open Source OCR Engine
-  URL:=http://tesseract-ocr.googlecode.com/
-  DEPENDS:=+libleptonica +libpthread +libstdcpp
+  URL:=https://github.com/tesseract-ocr
+  DEPENDS:=+libleptonica +libpthread +librt +libstdcpp
 endef
 
 CONFIGURE_ARGS += \
