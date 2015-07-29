@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=weechat
-PKG_VERSION:=1.1.1
+PKG_VERSION:=1.2
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://www.weechat.org/files/src
-PKG_MD5SUM:=3bb8d27301262bc434de9bcf7d77dce7
+PKG_MD5SUM:=3458efd51cdc1abfb6a5c33cc5ef7713
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/nls.mk
