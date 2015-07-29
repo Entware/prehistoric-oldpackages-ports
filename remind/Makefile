@@ -6,13 +6,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=remind
-PKG_VERSION:=03.01.12
+PKG_VERSION:=03.01.15
 PKG_RELEASE:=1
 
 PKG_SOURCE:=remind-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.roaringpenguin.com/files/download/
-PKG_MD5SUM:=de16cbfc3ee94defcb1abdf78b2ebcd1
-PKG_CAT:=zcat
+PKG_MD5SUM:=089c51c060fdda2357a833800a5bfe39
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/remind-$(PKG_VERSION)
 
@@ -26,20 +25,13 @@ define Package/remind
 endef
 
 define Package/remind/description
-	Remind is a powerfull commadline reminder.
-endef
-
-define Build/Configure
-	$(call Build/Configure/Default, \
-		--prefix=/opt --with-linux-headers="$(LINUX_DIR)" \
-	)
+ Remind is a powerfull commadline reminder.
 endef
 
 define Package/remind/install
-	$(INSTALL_DIR) $(1)/opt/bin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/remind $(1)/opt/bin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/rem2ps $(1)/opt/bin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/www/rem2html $(1)/opt/bin/
+	$(INSTALL_DIR) $(1)/opt/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/{remind,rem2ps} $(1)/opt/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/www/rem2html $(1)/opt/bin
 endef
 
 $(eval $(call BuildPackage,remind))
