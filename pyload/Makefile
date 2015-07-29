@@ -24,9 +24,8 @@ PKG_UNPACK=unzip -d $(PKG_BUILD_DIR) $(DL_DIR)/$(PKG_SOURCE)
 define Package/pyload
   SECTION:=net
   CATEGORY:=Network
-  DEPENDS:=+python +pyopenssl +python-curl +python-crypto \
-	+python-imglib +python-sqlite3 +duktape \
-	+tesseract +unrar
+  DEPENDS:=+pyopenssl +python-curl +python-crypto \
+	+python-imglib +python-sqlite3 +duktape +tesseract +unrar
   TITLE:=A fast, lightweight and full featured download manager
   URL:=http://pyload.org
 endef
@@ -39,7 +38,7 @@ endef
 
 define Package/pyload/install
 	$(INSTALL_DIR) $(1)/opt/share/python
-	$(CP) $(PKG_BUILD_DIR)/pyload $(1)/opt/share/python/
+	$(CP) $(PKG_BUILD_DIR)/pyload $(1)/opt/share/python
 	$(INSTALL_DIR) $(1)/opt/bin
 	$(LN) ../share/python/pyload/pyLoadCore.py $(1)/opt/bin/pyload
 	$(INSTALL_DIR) $(1)/opt/etc/init.d
