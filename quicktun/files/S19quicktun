@@ -6,10 +6,12 @@ PATH=${prefix}/bin:${prefix}/sbin:/sbin:/bin:/usr/sbin:/usr/bin
 start() {
 	echo "starting quicktun"
 	insmod tun
-	export REMOTE_ADDRESS=0.0.0.0
-	export LOCAL_ADDRESS=0.0.0.0
-	export PRIVATE_KEY=0000000000000000000000000000000000000000000000000000000000000000
-	export PUBLIC_KEY=0000000000000000000000000000000000000000000000000000000000000000
+	TUN_MODE=1 \
+	REMOTE_ADDRESS=0.0.0.0 \
+	REMOTE_PORT=0000 \
+	TUN_UP_SCRIPT="ifconfig utun0 inet 10.4.0.1 10.4.0.2 up" \
+	PRIVATE_KEY="run quicktun.keypair LOCALLY and paste the SECRET key here" \
+	PUBLIC_KEY="run quicktun.keypair REMOTELY and paste the PUBLIC key here" \
 	quicktun &
 	}
 
