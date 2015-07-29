@@ -8,32 +8,35 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=nagios-plugins
-PKG_VERSION:=1.4.14
-PKG_RELEASE:=3a
+PKG_VERSION:=2.0.3
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=@SF/nagiosplug
-PKG_MD5SUM:=a1835a48a777863ed2583de3c82446a9
+PKG_SOURCE_URL:=http://nagios-plugins.org/download
+PKG_MD5SUM:=6755765bab88b506181268ef7982595e
 
-PKG_FIXUP:=patch-libtool
+PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
 
-include $(INCLUDE_DIR)/uclibc++.mk
 include $(INCLUDE_DIR)/package.mk
-
-comma:= ,
 
 define Package/nagios-plugins
   SECTION:=admin
   CATEGORY:=Administration
-  DEPENDS:=$(CXX_DEPENDS) +libpq +libopenssl +libradiusclient-ng +libopenldap
+  DEPENDS:=+libopenssl +libpthread +librt +bash
   TITLE:=plugins for Nagios checks
   URL:=http://nagiosplug.sourceforge.net/
 endef
 
 CONFIGURE_ARGS += \
-	--without-mysql \
+	--with-trusted-path="/bin:/sbin:/usr/bin:/usr/sbin:/opt/bin:/opt/sbin" \
+	--with-perl="/opt/bin/perl" \
 	--with-openssl="$(STAGING_DIR)/opt" \
+	--without-pgsql \
+	--without-radius \
+	--without-ldap \
+	--without-mysql \
+	$(call autoconf_bool,CONFIG_IPV6,ipv6) \
 	--with-ping-command="/bin/ping -w %d -c %d %s" \
 	--with-ping6-command="/bin/ping6 -w %d -c %d %s" \
 	--with-ps-command="/bin/ps w" \
@@ -45,11 +48,10 @@ CONFIGURE_ARGS += \
 	--with-nslookup-command="/usr/bin/nslookup"
 
 define Package/nagios-plugins/install
-	$(INSTALL_DIR) $(1)/opt/libexec/nagios
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/* $(1)/opt/libexec/nagios/
-	$(SED) 's,$(STAGING_DIR_HOST)/bin/perl,/opt/bin/perl,g' \
-	    $(1)/opt/libexec/nagios/check_{breeze,disk_smb,file_age,flexlm,ifoperstatus,ifstatus,ircd,mailq,rpc,wave}
-	$(SED) 's,/bin/bash,/opt/bin/bash,g' $(1)/opt/libexec/nagios/check_{log,oracle,sensors}
+	$(INSTALL_DIR) $(1)/opt/lib
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/* $(1)/opt/lib
+	$(SED) 's,/bin/bash,/opt/bin/bash,g' \
+	    $(1)/opt/lib/check_{log,oracle,sensors}
 endef
 
 $(eval $(call BuildPackage,nagios-plugins))
