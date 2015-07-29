@@ -8,15 +8,16 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=nagios
-PKG_VERSION:=2.10
-PKG_RELEASE:=2
+PKG_VERSION:=3.5.1
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=@SF/nagios
-PKG_MD5SUM:=8c3a29e138f2ff8c8abbd3dd8a40c4b6
+PKG_SOURCE_URL:=@SF/nagios/nagios-3.x/nagios-3.5.1
+PKG_MD5SUM:=9947ed3d220b4da86710884260d42856
 
 include $(INCLUDE_DIR)/package.mk
 
+PKG_UNPACK:=gzip -dc $(DL_DIR)/$(PKG_SOURCE) | $(TAR) -C $(PKG_BUILD_DIR) --strip-components=1 -xf -
 define Package/nagios
   SECTION:=admin
   CATEGORY:=Administration
@@ -40,6 +41,8 @@ CONFIGURE_VARS += \
 CONFIGURE_ARGS += \
 	--with-nagios-user="root" \
 	--with-nagios-group="root" \
+	--with-command-user="root" \
+	--with-command-group="root" \
 	--sysconfdir="/opt/etc/nagios" \
 	--without-gd-lib \
 	--without-gd-inc \
@@ -54,22 +57,24 @@ define Build/Compile
 endef
 
 define Package/nagios/install
-	$(INSTALL_DIR)	$(1)/opt/etc/nagios
-	$(INSTALL_DATA)	$(PKG_INSTALL_DIR)/opt/etc/nagios/* $(1)/opt/etc/nagios/
-	$(INSTALL_DIR)	$(1)/opt/bin
-	$(INSTALL_BIN)	$(PKG_INSTALL_DIR)/opt/bin/{nagios,nagiostats} $(1)/opt/bin/
-	$(INSTALL_DIR)	$(1)/opt/sbin
-	$(INSTALL_BIN)	$(PKG_INSTALL_DIR)/opt/sbin/* $(1)/opt/sbin/
-	$(INSTALL_DIR)	$(1)/opt/share
-	$(CP)	$(PKG_INSTALL_DIR)/opt/share/* $(1)/opt/share/
+	$(INSTALL_DIR) $(1)/opt/bin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/nagios{,tats} $(1)/opt/bin
+	$(INSTALL_DIR) $(1)/opt/sbin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/*.cgi $(1)/opt/sbin
+	$(INSTALL_DIR) $(1)/opt/etc/nagios/objects
+	$(INSTALL_CONF) \
+	    $(PKG_INSTALL_DIR)/opt/etc/nagios/*.cfg \
+	    $(1)/opt/etc/nagios
+	$(INSTALL_CONF) \
+	    $(PKG_INSTALL_DIR)/opt/etc/nagios/objects/*.cfg \
+	    $(1)/opt/etc/nagios/objects
+	$(INSTALL_DIR)	$(1)/opt/share/www
+	$(CP)	$(PKG_INSTALL_DIR)/opt/share/* $(1)/opt/share/www
+	$(INSTALL_DIR)	$(1)/opt/var/{spool/checkresults,archives}
 endef
 
 define Package/nagios/conffiles
-/opt/etc/nagios/cgi.cfg
-/opt/etc/nagios/commands.cfg
-/opt/etc/nagios/localhost.cfg
-/opt/etc/nagios/nagios.cfg
-/opt/etc/nagios/resource.cfg
+/opt/etc/nagios/
 endef
 
 $(eval $(call BuildPackage,nagios))
