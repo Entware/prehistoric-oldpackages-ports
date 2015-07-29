@@ -8,12 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mutt
-PKG_VERSION:=1.5.21
-PKG_RELEASE:=1a
+PKG_VERSION:=1.5.23
+PKG_RELEASE:=1
 
-PKG_SOURCE_URL:=@SF/mutt
+PKG_SOURCE_URL:=https://bitbucket.org/mutt/mutt/downloads \
+	ftp://ftp.mutt.org/mutt
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_MD5SUM:=a29db8f1d51e2f10c070bf88e8a553fd
+PKG_MD5SUM:=11f5b6a3eeba1afa1257fe93c9f26bff
 
 PKG_INSTALL:=1
 
@@ -35,8 +36,10 @@ endef
 CONFIGURE_ARGS += \
 	--includedir=$(PKG_BUILD_DIR)/. \
 	--oldincludedir=$(PKG_BUILD_DIR)/. \
+	--disable-pgp \
 	--enable-pop \
 	--enable-imap \
+	--enable-smtp \
 	--with-ssl \
 	--with-idn
 
