@@ -9,13 +9,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=slang
-PKG_VERSION:=2.2.4
+PKG_VERSION:=2.3.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=ftp://space.mit.edu/pub/davis/slang/v2.2 \
-	ftp://space.mit.edu/pub/davis/slang/v2.2/OLD
-PKG_MD5SUM:=7fcfd447e378f07dd0c0bae671fe6487
+PKG_SOURCE_URL:=http://www.jedsoft.org/releases/slang
+PKG_MD5SUM:=3bcc790460d52db1316c20395b7ac2f1
 
 PKG_INSTALL:=1
 
@@ -24,7 +23,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/libslang2
   SECTION:=libs
   CATEGORY:=Libraries
-  TITLE:=S-Lang v2.2
+  TITLE:=S-Lang v2.3
   URL:=http://www.jedsoft.org/slang
   DEPENDS:= +terminfo
 endef
@@ -51,6 +50,11 @@ endef
 TARGET_CFLAGS += $(FPIC)
 TARGET_LDFLAGS += -L../src/${ARCH}elfobjs
 
+define Build/Configure
+	$(CP) ./files/ncurses5-config $(PKG_BUILD_DIR)
+	$(call Build/Configure/Default)
+endef
+
 CONFIGURE_ARGS += \
 	--enable-largefile \
 	--disable-warnings \
@@ -61,7 +65,7 @@ CONFIGURE_ARGS += \
 	--without-onig \
 	--without-png \
 	--without-z \
-	ac_cv_path_nc5config=$(PWD)/files/ncurses5-config
+	ac_cv_path_nc5config=$(PKG_BUILD_DIR)/ncurses5-config
 
 define Build/Compile
 	$(call Build/Compile/Default)

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$1" == "--terminfo" ]; then
+if [ "$1" = "--terminfo" ]; then
 	echo "/opt/share/terminfo"
 fi
 
