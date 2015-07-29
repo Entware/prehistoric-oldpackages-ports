@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=rsnapshot
-PKG_VERSION:=1.3.1
+PKG_VERSION:=1.4.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://www.rsnapshot.org/downloads/
-PKG_MD5SUM:=588f92995dcf60a6ea6df8d94a017e7e
+PKG_SOURCE_URL:=http://rsnapshot.org/downloads
+PKG_MD5SUM:=4011768eb6ec122a0f9479275ed64a27
 
 PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
@@ -55,14 +55,16 @@ define Package/rsnapshot/description
   space of one full backup, plus incrementals.
 endef
 
-CONFIGURE_ARGS += --without-logger \
+CONFIGURE_ARGS += \
+	--without-logger
 
-CONFIGURE_VARS += ac_cv_path_PERL=/opt/bin/perl \
-		  ac_cv_path_RSYNC=/opt/bin/rsync \
-		  ac_cv_path_CP=/opt/bin/cp \
-		  ac_cv_path_RM=/opt/bin/rm \
-		  ac_cv_path_DU=/opt/bin/du \
-		  ac_cv_path_SSH=/opt/bin/ssh \
+CONFIGURE_VARS += \
+	ac_cv_path_PERL=/opt/bin/perl \
+	ac_cv_path_RSYNC=/opt/bin/rsync \
+	ac_cv_path_CP=/opt/bin/cp \
+	ac_cv_path_RM=/opt/bin/rm \
+	ac_cv_path_DU=/opt/bin/du \
+	ac_cv_path_SSH=/opt/bin/ssh
 
 define Build/Configure
 	$(call Build/Configure/Default)
@@ -72,10 +74,13 @@ endef
 
 define Package/rsnapshot/install
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/$(PKG_NAME) $(1)/opt/bin/
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/$(PKG_NAME)-diff $(1)/opt/bin/
+	$(INSTALL_BIN) \
+	    $(PKG_INSTALL_DIR)/opt/bin/$(PKG_NAME){,-diff} \
+	    $(1)/opt/bin
 	$(INSTALL_DIR) $(1)/opt/etc
-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/etc/$(PKG_NAME).conf.default $(1)/opt/etc/$(PKG_NAME).conf
+	$(INSTALL_DATA) \
+	    $(PKG_INSTALL_DIR)/opt/etc/$(PKG_NAME).conf.default \
+	    $(1)/opt/etc/$(PKG_NAME).conf
 endef
 
 define Package/rsnapshot/conffiles

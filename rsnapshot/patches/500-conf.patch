@@ -1,51 +1,69 @@
 --- a/rsnapshot.conf.default.in
 +++ b/rsnapshot.conf.default.in
-@@ -26,3 +26,3 @@
+@@ -20,7 +20,7 @@
+ 
+ # All snapshots will be stored under this root directory.
  #
 -snapshot_root	/.snapshots/
 +snapshot_root	/opt/tmp/backups
  
-@@ -43,3 +43,3 @@
+ # If no_create_root is enabled, rsnapshot will not automatically create the
+ # snapshot_root directory. This is particularly useful if you are backing
+@@ -37,7 +37,7 @@
+ #
+ # See the README file or the man page for more details.
  #
 -#@CMD_CP@
 +@CMD_CP@
  
-@@ -56,3 +56,3 @@
+ # uncomment this to use the rm program instead of the built-in perl routine.
+ #
+@@ -50,21 +50,21 @@
+ 
+ # Uncomment this to enable remote ssh backups over rsync.
  #
 -#@CMD_SSH@
 +@CMD_SSH@
  
-@@ -60,3 +60,3 @@
+ # Comment this out to disable syslog support.
  #
 -@CMD_LOGGER@
 +#@CMD_LOGGER@
  
-@@ -66,3 +66,3 @@
+ # Uncomment this to specify the path to "du" for disk usage checks.
+ # If you have an older version of "du", you may also want to check the
+ # "du_args" parameter below.
  #
 -#@CMD_DU@
 +@CMD_DU@
  
-@@ -70,3 +70,3 @@
+ # Uncomment this to specify the path to rsnapshot-diff.
  #
 -#cmd_rsnapshot_diff	/usr/local/bin/rsnapshot-diff
 +cmd_rsnapshot_diff	/opt/bin/rsnapshot-diff
  
-@@ -88,3 +88,3 @@
- 
--interval	hourly	6
-+interval	hourly	12
- interval	daily	7
-@@ -115,3 +115,3 @@
+ # Specify the path to a script (and any optional arguments) to run right
+ # before rsnapshot syncs files
+@@ -117,14 +117,14 @@
+ # If you enable this, data will be written to the file you specify. The
+ # amount of data written is controlled by the "loglevel" parameter.
  #
 -#logfile	/var/log/rsnapshot
 +logfile	/opt/var/log/rsnapshot
  
-@@ -122,3 +122,3 @@
+ # If enabled, rsnapshot will write a lockfile to prevent two instances
+ # from running simultaneously (and messing up the snapshot_root).
+ # If you enable this, make sure the lockfile directory is not world
+ # writable. Otherwise anyone can prevent the program from running.
  #
 -lockfile	/var/run/rsnapshot.pid
 +lockfile	/opt/var/run/rsnapshot.pid
  
-@@ -194,6 +194,18 @@
+ # Default rsync args. All rsync commands have at least these options set.
+ #
+@@ -216,10 +216,22 @@
+ ### BACKUP POINTS / SCRIPTS ###
+ ###############################
  
 +# ROUTER_STATE
 +backup	/opt/etc/	router_state/
@@ -67,3 +85,5 @@
 +#backup	/etc/		localhost/
 +#backup	/usr/local/	localhost/
  #backup	/var/log/rsnapshot		localhost/
+ #backup	/etc/passwd	localhost/
+ #backup	/home/foo/My Documents/		localhost/
