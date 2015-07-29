@@ -8,15 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mosh
-PKG_VERSION:=1.2.4a-20140108
-PKG_REV:=50152bfcba872dd2ef5318877823005ad0c4593f
+PKG_VERSION:=1.2.5
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_URL:=git://github.com/keithw/mosh.git
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_VERSION:=$(PKG_REV)
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=https://mosh.mit.edu
+PKG_MD5SUM:=56d7147cf7031583ba7d8db09033e0c5
 
 PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
@@ -92,17 +89,18 @@ CONFIGURE_ARGS += \
 
 define Package/mosh-client/install
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/mosh-client $(1)/opt/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/mosh-client $(1)/opt/bin
 endef
 
 define Package/mosh-server/install
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/mosh-server $(1)/opt/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/mosh-server $(1)/opt/bin
 endef
 
 define Package/mosh-full/install
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/mosh $(1)/opt/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/mosh $(1)/opt/bin
+	$(SED) 's,/usr/bin/env perl,/opt/bin/perl,g' $(1)/opt/bin/mosh
 endef
 
 $(eval $(call BuildPackage,mosh-client))
