@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pycrypto
-PKG_VERSION:=2.6
+PKG_VERSION:=2.6.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/
-PKG_MD5SUM:=88dad0a270d1fe83a39e0467a66a22bb
+PKG_SOURCE_URL:=https://pypi.python.org/packages/source/p/pycrypto
+PKG_MD5SUM:=55a61a054aa66812daf5161a0d5d7eda
 
 include $(INCLUDE_DIR)/package.mk
 $(call include_mk, python-package.mk)
@@ -24,7 +24,7 @@ define Package/python-crypto
 	SUBMENU:=Python
 	TITLE:=python-crypto
 	URL:=http://www.pycrypto.org/
-	DEPENDS:=+python +libgmp
+	DEPENDS:=+python
 endef
 
 define Package/python-crypto/description
@@ -32,8 +32,15 @@ A collection of both secure hash functions (such as MD5 and SHA),
 and various encryption algorithms (AES, DES, IDEA, RSA, ElGamal, etc.).
 endef
 
+CONFIGURE_ARGS += \
+	--without-gmp \
+	--without-mpir
+
 define Build/Compile
-	$(call Build/Compile/PyMod,,install --prefix=/opt --root=$(PKG_INSTALL_DIR))
+	$(call Build/Compile/PyMod,,install \
+	    --prefix=/opt \
+	    --root="$(PKG_INSTALL_DIR)" \
+	)
 endef
 
 define Package/python-crypto/install
