@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pyopenssl
-PKG_VERSION:=0.10
+PKG_VERSION:=0.15.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=pyOpenSSL-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://pypi.python.org/packages/source/p/pyOpenSSL/
-PKG_MD5SUM:=34db8056ec53ce80c7f5fc58bee9f093
+PKG_MD5SUM:=f447644afcbd5f0a1f47350fec63a4c6
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/pyOpenSSL-$(PKG_VERSION)
 PKG_BUILD_DEPENDS:=python
@@ -35,7 +35,10 @@ define Package/pyopenssl/description
 endef
 
 define Build/Compile
-	$(call Build/Compile/PyMod,,install --prefix="$(PKG_INSTALL_DIR)/opt")
+	$(call Build/Compile/PyMod,,install \
+	    --prefix=/opt \
+	    --root=$(PKG_INSTALL_DIR) \
+	)
 endef
 
 define Package/pyopenssl/install
