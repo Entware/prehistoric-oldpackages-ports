@@ -1,0 +1,15 @@
+--- a/Makefile
++++ b/Makefile
+@@ -2,10 +2,10 @@
+ default: quicktun quicktun.keypair
+ 
+ quicktun: src/proto.nacltai.c
+-	cc -o $@ $< -lsodium
++	$(CC) $(CFLAGS) -o $@ $< -lsodium $(LDFLAGS)
+ 
+ quicktun.keypair: src/keypair.c
+-	cc -o $@ $< -lsodium
++	$(CC) $(CFLAGS) -o $@ $< -lsodium $(LDFLAGS)
+ 
+ clean:
+ 	rm -rf quicktun quicktun.keypair

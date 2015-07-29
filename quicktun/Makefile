@@ -8,14 +8,15 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=quicktun
-PKG_VERSION:=2.1.7
-PKG_RELEASE:=2
+PKG_VERSION:=2.2.4-burke-20140417
+PKG_REV:=9c6bdb4d6284374e197796635fa1103781111c5f
+PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tgz
-PKG_SOURCE_URL:=http://oss.ucis.nl/quicktun/src
-PKG_MD5SUM:=6cf38b17218deb8c908cc17d91f9cbd7
-
-PKG_BUILD_DEPENDS:=nacl
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
+PKG_SOURCE_URL:=https://github.com/burke/QuickTun
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_VERSION:=$(PKG_REV)
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -25,35 +26,16 @@ define Package/quicktun
   TITLE:=QuickTun is a simple and secure VPN software
   URL:=http://wiki.ucis.nl/QuickTun
   SUBMENU:=VPN
+  DEPENDS:=+libsodium
 endef
 
 define Package/quicktun/description
  QuickTun is a simple and secure VPN software
 endef
 
-define Build/Compile
-	( \
-		cd $(PKG_BUILD_DIR); \
-		mkdir -p obj out; \
-		\
-		export CPATH=$(STAGING_DIR)/opt/include/nacl; \
-		\
-		$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_CPPFLAGS) -c -DCOMBINED_BINARY        src/proto.raw.c         -o obj/proto.raw.o; \
-		$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_CPPFLAGS) -c -DCOMBINED_BINARY        src/proto.nacl0.c       -o obj/proto.nacl0.o; \
-		$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_CPPFLAGS) -c -DCOMBINED_BINARY        src/proto.nacltai.c     -o obj/proto.nacltai.o; \
-		$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_CPPFLAGS) -c -DCOMBINED_BINARY        src/run.combined.c      -o obj/run.combined.o; \
-		$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_CPPFLAGS) -c                          src/common.c            -o obj/common.o; \
-		$(TARGET_CC)  $(TARGET_LDFLAGS) -o out/quicktun.combined obj/common.o obj/run.combined.o obj/proto.raw.o obj/proto.nacl0.o obj/proto.nacltai.o \
-			-lnacl; \
-		\
-		$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_CPPFLAGS) $(TARGET_LDFLAGS) -o out/quicktun.keypair     src/keypair.c           -lnacl \
-	)
-endef
-
 define Package/quicktun/install
 	$(INSTALL_DIR) $(1)/opt/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/out/quicktun.{combined,keypair} $(1)/opt/sbin/
-	$(LN) quicktun.combined $(1)/opt/sbin/quicktun
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/quicktun{,.keypair} $(1)/opt/sbin
 	$(INSTALL_DIR) $(1)/opt/etc/init.d
 	$(INSTALL_BIN) files/S19quicktun $(1)/opt/etc/init.d
 endef

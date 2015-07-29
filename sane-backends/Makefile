@@ -94,32 +94,31 @@ define Package/sane-backends/conffiles
 endef
 
 define Package/sane-backends/install
-	$(INSTALL_DIR) $(1)/opt/etc/
 	$(INSTALL_DIR) $(1)/opt/etc/sane.d
-	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/opt/etc/sane.d/*.conf $(1)/opt/etc/sane.d/
+	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/opt/etc/sane.d/*.conf $(1)/opt/etc/sane.d
 	$(INSTALL_DIR) $(1)/opt/sbin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/* $(1)/opt/sbin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/* $(1)/opt/sbin
 	$(INSTALL_DIR) $(1)/opt/etc/init.d
 	$(INSTALL_BIN) ./files/S01sane-backends $(1)/opt/etc/init.d
 endef
 
 define Package/sane-libs/install
 	$(INSTALL_DIR) $(1)/opt/lib
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsane.so.* $(1)/opt/lib/
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsane.so.* $(1)/opt/lib
 	$(INSTALL_DIR) $(1)/opt/lib/sane
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/sane/libsane-*.so.* $(1)/opt/lib/sane/
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/sane/libsane-*.so.* $(1)/opt/lib/sane
 endef
 
 define Package/sane-frontends/install
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/* $(1)/opt/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/* $(1)/opt/bin
 endef
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/opt/include
-	$(CP) $(PKG_INSTALL_DIR)/opt/include/sane $(1)/opt/include/
+	$(CP) $(PKG_INSTALL_DIR)/opt/include/sane $(1)/opt/include
 	$(INSTALL_DIR) $(1)/opt/lib
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsane.{a,so*} $(1)/opt/lib/
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsane.{a,so*} $(1)/opt/lib
 endef
 
 $(eval $(call BuildPackage,sane-backends))

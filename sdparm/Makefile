@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=sdparm
-PKG_VERSION:=1.04
+PKG_VERSION:=1.09
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://sg.danny.cz/sg/p
-PKG_MD5SUM:=f4b8c7bfc1cd27d30fbdc066a65a44ea
+PKG_MD5SUM:=730f4be939f970715b819afa17cadf76
 
 PKG_FIXUP:=autoreconf
 
@@ -28,13 +28,12 @@ define Package/sdparm
 endef
 
 define Package/sdparm/description
-	The sdparm utility outputs and in some cases modifies SCSI device
-	parameters.
+ The sdparm utility outputs and in some cases modifies SCSI device parameters.
 endef
 
 define Package/sdparm/install
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/$(PKG_NAME) $(1)/opt/bin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/$(PKG_NAME) $(1)/opt/bin
 endef
 
 $(eval $(call BuildPackage,sdparm))

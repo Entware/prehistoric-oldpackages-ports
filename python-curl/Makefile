@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pycurl
-PKG_VERSION:=7.19.0
+PKG_VERSION:=7.19.5.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://pycurl.sourceforge.net/download/
-PKG_MD5SUM:=
+PKG_SOURCE_URL:=https://pypi.python.org/packages/source/p/pycurl
+PKG_MD5SUM:=f44cd54256d7a643ab7b16e3f409b26b
 
 include $(INCLUDE_DIR)/package.mk
 $(call include_mk, python-package.mk)
@@ -32,7 +32,13 @@ Python module interface to the cURL library.
 endef
 
 define Build/Compile
-	$(call Build/Compile/PyMod,,install --prefix=/opt --root=$(PKG_INSTALL_DIR))
+	$(call Build/Compile/PyMod,,install \
+	    --prefix=/opt \
+	    --root="$(PKG_INSTALL_DIR)" \
+	    --curl-config="$(STAGING_DIR)/opt/bin/curl-config" \
+	    --openssl-dir="$(STAGING_DIR)/opt" \
+	    --with-ssl \
+	)
 endef
 
 define Package/python-curl/install
