@@ -4,18 +4,19 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# No further development. Switched to another fork, which was abandoned too.
 
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=n2n
-PKG_REV:=7223
-PKG_VERSION:=2.1.0-r$(PKG_REV)
+PKG_VERSION:=2.1.0-20130823
+PKG_REV:=d3bc1d5a81b22637d6ec5cb2712f3bbfa6232b27
 PKG_RELEASE:=1
 
-PKG_SOURCE_URL:=https://svn.ntop.org/svn/ntop/trunk/n2n/n2n_v2/
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE:=$(PKG_SOURCE_SUBDIR).tar.gz
-PKG_SOURCE_PROTO:=svn
+PKG_SOURCE_URL:=https://github.com/lukablurr/n2n_v2_fork
+PKG_SOURCE_PROTO:=git
 PKG_SOURCE_VERSION:=$(PKG_REV)
 
 include $(INCLUDE_DIR)/package.mk
@@ -24,7 +25,7 @@ define Package/n2n
   SECTION:=net
   CATEGORY:=Network
   TITLE:=VPN tunneling daemon
-  URL:=http://www.ntop.org/n2n/
+  URL:=$(OKG_SOURCE_URL)
   SUBMENU:=VPN
   DEPENDS:=+libopenssl
 endef
@@ -34,8 +35,7 @@ MAKE_FLAGS += \
 
 define Package/n2n/install
 	$(INSTALL_DIR) $(1)/opt/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/edge $(1)/opt/sbin/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/supernode $(1)/opt/sbin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/{edge,supernode} $(1)/opt/sbin
 endef
 
 $(eval $(call BuildPackage,n2n))
