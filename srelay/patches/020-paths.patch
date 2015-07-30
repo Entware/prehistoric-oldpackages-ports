@@ -1,0 +1,15 @@
+--- a/srelay.h
++++ b/srelay.h
+@@ -110,9 +110,9 @@
+ #endif
+ #define CONFIG    SYSCONFDIR "/srelay.conf"
+ #define PWDFILE   SYSCONFDIR "/srelay.passwd"
+-#define PIDFILE   "/var/run/srelay.pid"
+-#define WORKDIR0  "/var/run"
+-#define WORKDIR1  "/var/tmp"
++#define PIDFILE   "/opt/var/run/srelay.pid"
++#define WORKDIR0  "/opt/var/run"
++#define WORKDIR1  "/opt/var/tmp"
+ 
+ #define S4DEFUSR  "user"
+ 
