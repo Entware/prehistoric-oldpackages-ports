@@ -38,11 +38,9 @@ define Package/unfs3/description
 	on the server.
 endef
 
-TARGET_CFLAGS += -I$(STAGING_DIR)/opt/include
-
 define Package/unfs3/install
 	$(INSTALL_DIR) $(1)/opt/etc/init.d
-	$(INSTALL_BIN) ./files/S56unfsd $(1)/opt/etc/init.d/
+	$(INSTALL_BIN) ./files/S56unfsd $(1)/opt/etc/init.d
 	$(INSTALL_DATA) ./files/$(PKG_NAME).exports $(1)/opt/etc/exports
 	$(INSTALL_DIR) $(1)/opt/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/unfsd $(1)/opt/sbin
