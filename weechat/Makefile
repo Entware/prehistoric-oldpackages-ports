@@ -48,19 +48,19 @@ CMAKE_OPTIONS+= \
 	-DENABLE_TCL=OFF
 
 TARGET_LDFLAGS += \
-	-L$(ICONV_PREFIX)/lib -ldl -lintl -liconv
+	-ldl -lintl -liconv
 
 CONFIGURE_ARGS+= \
 	--with-libintl-prefix="$(INTL_PREFIX)"
 
 define Package/weechat/install
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/weechat-curses $(1)/opt/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/weechat-curses $(1)/opt/bin
 	ln -sf weechat-curses $(1)/opt/bin/weechat
 	$(INSTALL_DIR) $(1)/opt/lib/weechat/plugins
 	$(CP) \
 		$(PKG_INSTALL_DIR)/opt/lib/weechat/plugins/* \
-		$(1)/opt/lib/weechat/plugins/
+		$(1)/opt/lib/weechat/plugins
 endef
 
 $(eval $(call BuildPackage,weechat))
