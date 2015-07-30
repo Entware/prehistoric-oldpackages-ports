@@ -54,8 +54,6 @@ endef
 define Package/tftpd-hpa/install
 	$(INSTALL_DIR) $(1)/opt/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tftpd/tftpd $(1)/opt/sbin/tftpd-hpa
-#	$(INSTALL_DIR) $(1)/etc/init.d
-#	$(INSTALL_BIN) ./files/tftpd-hpa.init $(1)/etc/init.d/tftpd-hpa
 endef
 
 $(eval $(call BuildPackage,tftp-hpa))
