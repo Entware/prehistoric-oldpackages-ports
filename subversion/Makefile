@@ -26,7 +26,7 @@ define Package/subversion/Default
   SECTION:=net
   CATEGORY:=Network
   TITLE:=A compelling replacement for CVS
-  DEPENDS:=+zlib +libneon +libaprutil +libmagic $(ICONV_DEPENDS)
+  DEPENDS:=+libaprutil +libmagic
   URL:=http://subversion.apache.org/
   SUBMENU:=Version Control Systems
 endef
@@ -41,7 +41,6 @@ endef
 
 define Package/subversion-libs
   $(call Package/subversion/Default)
-  DEPENDS+=+unixodbc
   TITLE:=subversion libs
 endef
 
@@ -94,13 +93,6 @@ CONFIGURE_ARGS += \
 	--with-apxs=no \
 	--without-sasl \
 
-CONFIGURE_VARS += \
-	svn_lib_neon=yes \
-	LDFLAGS="$(TARGET_LDFLAGS) -lcrypt -lm \
-		-lz -lpthread -liconv -L$(TOOLCHAIN_DIR)/opt/lib -L$(ICONV_PREFIX)/lib \
-		-L$(TOOLCHAIN_DIR)/lib" \
-	CPPFLAGS="$(TARGET_CPPFLAGS)" \
-
 define Build/Prepare
 	$(Build/Prepare/Default)
 	$(RM) $(PKG_BUILD_DIR)/build/ac-macros/macosx.m4
@@ -114,17 +106,21 @@ endef
 
 define Package/subversion-libs/install
 	$(INSTALL_DIR) $(1)/opt/lib
-	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsvn_*.so.* $(1)/opt/lib/
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsvn_*.so.* $(1)/opt/lib
 endef
 
 define Package/subversion-client/install
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/{svn,svnversion,svnsync} $(1)/opt/bin/
+	$(INSTALL_BIN) \
+	    $(PKG_INSTALL_DIR)/opt/bin/svn{,mucc,version,sync} \
+	    $(1)/opt/bin
 endef
 
 define Package/subversion-server/install
 	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/svn{look,admin,dumpfilter,serve} $(1)/opt/bin/
+	$(INSTALL_BIN) \
+	    $(PKG_INSTALL_DIR)/opt/bin/svn{look,admin,dumpfilter,rdump,serve} \
+	    $(1)/opt/bin
 endef
 
 $(eval $(call BuildPackage,subversion-libs))
