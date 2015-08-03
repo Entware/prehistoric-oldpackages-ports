@@ -14,7 +14,6 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://www.speech.cs.cmu.edu/flite/packed/flite-1.4/
 PKG_MD5SUM:=b7c3523b3bbc6f29ce61e6650cd9a428
 
-PKG_BUILD_PARALLEL:=1
 PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
