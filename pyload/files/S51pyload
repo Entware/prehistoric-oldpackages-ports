@@ -5,16 +5,16 @@ PATH=${prefix}/bin:${prefix}/sbin:/sbin:/bin:/usr/sbin:/usr/bin
 
 start() {
 	echo "starting pyLoad"
-	pyload --daemon
+	pyload --daemon --configdir=/opt/var/pyload
 	}
 
 stop() {
 	echo "stopping pyLoad"
-	pyload --status | xargs kill -9
+	pyload --quit --configdir=/opt/var/pyload
 	}
 
 status() {
-	pyload --status
+	pyload --status --configdir=/opt/var/pyload
 	}
 
 case "$1" in
