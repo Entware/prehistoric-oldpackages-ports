@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=isc-dhcp
 UPSTREAM_NAME:=dhcp
 PKG_VERSION:=4.3.2
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(UPSTREAM_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=ftp://ftp.isc.org/isc/dhcp/$(PKG_VERSION)
@@ -193,6 +193,14 @@ ifeq ($(BUILD_VARIANT),ipv6)
 endif
 endef
 
+define Package/isc-dhcp-server-ipv4/conffiles
+/opt/etc/dhcpd.conf
+endef
+
+define Package/isc-dhcp-server-ipv6/conffiles
+/opt/etc/dhcpd6.conf
+endef
+
 define Package/isc-dhcp-client-$(BUILD_VARIANT)/install
 	$(INSTALL_DIR) $(1)/opt/sbin $(1)/opt/etc
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/dhclient $(1)/opt/sbin
@@ -200,6 +208,14 @@ define Package/isc-dhcp-client-$(BUILD_VARIANT)/install
 ifeq ($(BUILD_VARIANT),ipv6)
 	$(INSTALL_BIN) ./files/dhclient6.conf $(1)/opt/etc
 endif
+endef
+
+define Package/isc-dhcp-client-ipv4/conffiles
+/opt/etc/dhclient.conf
+endef
+
+define Package/isc-dhcp-client-ipv6/conffiles
+/opt/etc/dhclient6.conf
 endef
 
 define Package/isc-dhcp-omshell-$(BUILD_VARIANT)/install
