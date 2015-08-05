@@ -40,7 +40,7 @@ cat << EOF
 Please install optional pyload dependencies first.
 
 * for SSL connection with WebUI:
-opkg install pyopenssl openssl-utils
+opkg install pyopenssl openssl-util
 
 * for several hosters, ClickNLoad feature:
 opkg install duktape
