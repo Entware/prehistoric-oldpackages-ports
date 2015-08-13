@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=pyload
 PKG_VERSION:=0.4.9-20150804
 PKG_REV:=3a2a26ebd2f67aaff6115b538599c007d0b14683
-PKG_RELEASE:=1
+PKG_RELEASE:=1a
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
@@ -67,6 +67,8 @@ define Package/pyload/install
 	$(LN) ../share/pyload/pyLoadCore.py $(1)/opt/bin/pyload
 	$(INSTALL_DIR) $(1)/opt/etc/init.d
 	$(INSTALL_BIN) ./files/S51pyload $(1)/opt/etc/init.d
+	$(SED) 's,/usr/bin/env python,/opt/bin/python,g' \
+		$(1)/opt/share/pyload/pyLoad{Cli,Gui,Core}.py
 endef
 
 $(eval $(call BuildPackage,pyload))
