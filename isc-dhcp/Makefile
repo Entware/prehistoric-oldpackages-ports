@@ -39,7 +39,6 @@ endef
 
 define Package/isc-dhcp-relay-ipv6
   $(call Package/isc-dhcp/Default)
-  DEPENDS:= @IPV6
   TITLE+= relay (with IPv6)
   VARIANT:=ipv6
 endef
@@ -76,7 +75,6 @@ endef
 
 define Package/isc-dhcp-client-ipv6
   $(call Package/isc-dhcp/Default)
-  DEPENDS:= @IPV6
   TITLE+= client (with IPv6)
   VARIANT:=ipv6
 endef
@@ -105,7 +103,6 @@ endef
 
 define Package/isc-dhcp-server-ipv6
   $(call Package/isc-dhcp/Default)
-  DEPENDS:= @IPV6
   TITLE+= server (with IPv6)
   VARIANT:=ipv6
 endef
@@ -134,7 +131,7 @@ endef
 
 define Package/isc-dhcp-omshell-ipv6
   $(call Package/isc-dhcp/Default)
-  DEPENDS:= @IPV6 +isc-dhcp-server-ipv6
+  DEPENDS:= +isc-dhcp-server-ipv6
   TITLE+= omshell (with IPv6)
   VARIANT:=ipv6
 endef
